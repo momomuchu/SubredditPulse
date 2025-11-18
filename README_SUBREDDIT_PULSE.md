@@ -135,11 +135,23 @@ The SubredditPulse MVP includes the following tables:
 
 ### Scans
 - `GET /api/scans?subredditId=xxx` - Get scans for a subreddit
-- `POST /api/scans` - Trigger a new scan
+- `POST /api/scans` - Trigger a new scan (manual or deep)
 
 ### Credits
 - `GET /api/credits` - Get user's credit balance
 - `POST /api/credits` - Add credits to account
+
+### Alerts
+- `GET /api/alerts?subredditId=xxx` - Get alert history for a subreddit
+- `PUT /api/alerts` - Update alert configuration (enable/disable, change threshold)
+
+### Export
+- `GET /api/export/csv?subredditId=xxx` - Export scan data as CSV
+- `POST /api/export/csv/detailed` - Export detailed scan results including keyword mentions
+
+### Cron Jobs
+- `POST /api/cron/scans` - Automated endpoint for scheduled scans (requires CRON_SECRET)
+- `GET /api/cron/scans` - Check status of subreddits due for scanning
 
 ## Architecture
 
@@ -160,7 +172,13 @@ The SubredditPulse MVP includes the following tables:
    - Orchestrates the scanning process
    - Manages credit deduction
    - Saves results to database
-   - Triggers alerts
+   - Triggers alerts and notifications
+
+4. **Email Notifications Service** (`src/libs/EmailNotifications.ts`)
+   - Sends email alerts using Resend API
+   - Sentiment drop notifications
+   - Keyword spike notifications
+   - Weekly digest emails
 
 ## Dashboard Pages
 
@@ -229,3 +247,143 @@ MIT License - see LICENSE file for details
 ---
 
 Built with ❤️ for indie makers and small teams who need affordable Reddit sentiment tracking.
+
+## New Features & Improvements
+
+### Email Notifications
+SubredditPulse now sends email notifications for important alerts:
+- **Sentiment Drop Alerts**: Get notified when sentiment drops significantly
+- **Keyword Spike Alerts**: Get alerted when your tracked keywords trend
+- **Weekly Digest**: Optional weekly summary of all your monitored subreddits
+
+To enable email notifications:
+1. Sign up for a free [Resend](https://resend.com) account
+2. Get your API key from https://resend.com/api-keys
+3. Add to `.env.local`:
+   ```env
+   RESEND_API_KEY=re_your_api_key_here
+   EMAIL_FROM=SubredditPulse <noreply@yourdomain.com>
+   ```
+
+### Automated Scans
+Set up automatic scans using cron jobs:
+
+**Using Vercel Cron:**
+```json
+// vercel.json
+{
+  "crons": [{
+    "path": "/api/cron/scans",
+    "schedule": "0 */12 * * *"
+  }]
+}
+```
+
+**Using GitHub Actions:**
+```yaml
+# .github/workflows/cron-scans.yml
+name: Scheduled Scans
+on:
+  schedule:
+    - cron: '0 */12 * * *'
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger scans
+        run: |
+          curl -X POST ${{ secrets.APP_URL }}/api/cron/scans \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"
+```
+
+### Data Export
+Export your sentiment data for further analysis:
+- **CSV Export**: Simple export of scan history
+- **Detailed CSV**: Includes keyword mentions, sentiment distribution, and top posts
+- Access via `/api/export/csv?subredditId=xxx`
+
+### Sentiment Trend Visualization
+A new `SentimentTrendChart` component visualizes sentiment over time:
+- Line chart showing sentiment trends
+- Color-coded for positive/neutral/negative
+- Shows last 30 scans
+- Responsive SVG rendering
+
+Usage:
+```tsx
+import { SentimentTrendChart } from '@/components/pulse/SentimentTrendChart';
+
+<SentimentTrendChart scans={scans} title="Sentiment Trend" />
+```
+
+### Alert Management
+Manage your alerts via the new API:
+- View alert history: `GET /api/alerts?subredditId=xxx`
+- Update alert settings: `PUT /api/alerts`
+- Enable/disable specific alerts
+- Adjust sensitivity thresholds
+
+## Advanced Configuration
+
+### Setting Up Automated Scans
+
+1. **Configure scan frequency** when adding a subreddit:
+   - Daily (scans every 24 hours)
+   - Every 3 days
+   - Weekly
+
+2. **Set up cron secret** in `.env.local`:
+   ```env
+   CRON_SECRET=your_random_secret_string
+   ```
+
+3. **Deploy cron job** using your platform of choice (Vercel, GitHub Actions, etc.)
+
+### Customizing Email Templates
+
+Email templates are in `src/libs/EmailNotifications.ts`. Customize:
+- Subject lines
+- HTML content
+- From address
+- Email styling
+
+### Rate Limiting
+
+Reddit API has rate limits. SubredditPulse implements:
+- 1-second delay between API calls
+- 2-second delay between automated scans
+- Configurable request delays in Reddit service
+
+## Performance Tips
+
+1. **Optimize scan frequency**: Don't scan too frequently to preserve credits
+2. **Use deep scans sparingly**: 500-post scans cost more credits
+3. **Set appropriate alert thresholds**: Avoid alert fatigue with proper thresholds
+4. **Export data regularly**: Keep local backups using CSV export
+5. **Monitor credit usage**: Track credit consumption to optimize costs
+
+## Troubleshooting
+
+### Email notifications not working
+- Verify `RESEND_API_KEY` is set correctly
+- Check email domain is verified in Resend
+- Look for email errors in server logs
+
+### Scans not triggering automatically
+- Verify cron job is configured correctly
+- Check `CRON_SECRET` matches in cron request
+- Ensure `nextScanAt` is being updated properly
+
+### Reddit API rate limiting
+- Reduce scan frequency if hitting limits
+- Add delays between API calls
+- Consider using Reddit Premium for higher rate limits
+
+## Security Best Practices
+
+1. **Environment Variables**: Never commit `.env.local` to version control
+2. **Cron Secret**: Use a strong random string for `CRON_SECRET`
+3. **API Authentication**: All endpoints require user authentication
+4. **Rate Limiting**: Consider adding Arcjet rate limiting for API routes
+5. **Input Validation**: All user inputs are validated before database operations
+

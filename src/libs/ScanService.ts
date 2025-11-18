@@ -1,9 +1,10 @@
 import { and, desc, eq } from 'drizzle-orm';
 
 import { db } from './DB';
+import { EmailNotifications } from './EmailNotifications';
 import { Reddit } from './Reddit';
 import { SentimentAnalysis } from './SentimentAnalysis';
-import { alerts, alertHistory, monitoredSubreddits, scanResults, scans, sentimentBaselines, subredditKeywords, userCredits } from '@/models/Schema';
+import { alerts, alertHistory, monitoredSubreddits, scanResults, scans, sentimentBaselines, subredditKeywords, userCredits, users } from '@/models/Schema';
 
 /**
  * Scan Service
@@ -470,14 +471,59 @@ class ScanServiceClass {
 
       if (shouldTrigger) {
         // Create alert history record
-        await db.insert(alertHistory).values({
+        const [alertRecord] = await db.insert(alertHistory).values({
           alertId: alert.id,
           scanId,
           message,
           data: { currentSentiment, baselineSentiment, keywordStats },
-        });
+        }).returning();
 
-        // TODO: Send notification (email, Discord, etc.)
+        // Get subreddit and user info for notification
+        const [subredditInfo] = await db.select()
+          .from(monitoredSubreddits)
+          .where(eq(monitoredSubreddits.id, subredditId))
+          .limit(1);
+
+        if (subredditInfo) {
+          const [user] = await db.select()
+            .from(users)
+            .where(eq(users.id, subredditInfo.userId))
+            .limit(1);
+
+          if (user?.email) {
+            // Send email notification based on alert type
+            if (alert.alertType === 'sentiment_drop') {
+              const dropPercent = ((baselineSentiment - currentSentiment) / Math.abs(baselineSentiment)) * 100;
+              await EmailNotifications.sendSentimentDropAlert(
+                user.email,
+                subredditInfo.displayName || subredditInfo.subredditName,
+                currentSentiment,
+                baselineSentiment,
+                dropPercent,
+              );
+            } else if (alert.alertType === 'keyword_spike') {
+              // Find which keyword spiked
+              Object.entries(keywordStats).forEach(async ([keyword, stats]) => {
+                if (stats.mentions > 10) {
+                  await EmailNotifications.sendKeywordSpikeAlert(
+                    user.email!,
+                    subredditInfo.displayName || subredditInfo.subredditName,
+                    keyword,
+                    stats.mentions,
+                  );
+                }
+              });
+            }
+
+            // Mark notification as sent
+            await db.update(alertHistory)
+              .set({
+                notificationSent: true,
+                notificationSentAt: new Date(),
+              })
+              .where(eq(alertHistory.id, alertRecord.id));
+          }
+        }
       }
     }
   }
