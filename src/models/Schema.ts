@@ -230,3 +230,18 @@ export const alertHistory = pgTable('alert_history', {
   notificationSentAt: timestamp('notification_sent_at', { mode: 'date' }),
   createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
 });
+
+// Cron job execution logs
+export const cronJobs = pgTable('cron_jobs', {
+  id: text('id').primaryKey().$defaultFn(() => randomUUID()),
+  jobName: text('job_name').notNull(), // 'automated_scans', 'weekly_digest', etc.
+  status: text('status').notNull().default('running'), // running, completed, failed
+  subredditsProcessed: integer('subreddits_processed').default(0),
+  scansTriggered: integer('scans_triggered').default(0),
+  errorCount: integer('error_count').default(0),
+  errorMessage: text('error_message'),
+  metadata: jsonb('metadata').$type<Record<string, any> | null>(),
+  startedAt: timestamp('started_at', { mode: 'date' }).defaultNow().notNull(),
+  completedAt: timestamp('completed_at', { mode: 'date' }),
+  duration: integer('duration'), // Duration in milliseconds
+});

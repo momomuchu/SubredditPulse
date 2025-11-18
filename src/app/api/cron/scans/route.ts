@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server';
 import { db } from '@/libs/DB';
 import { Env } from '@/libs/Env';
 import { ScanService } from '@/libs/ScanService';
-import { monitoredSubreddits } from '@/models/Schema';
+import { cronJobs, monitoredSubreddits } from '@/models/Schema';
 
 /**
  * POST /api/cron/scans
@@ -15,6 +15,9 @@ import { monitoredSubreddits } from '@/models/Schema';
  * to trigger automatic scans for all subreddits that are due for scanning
  */
 export async function POST(request: NextRequest) {
+  const startTime = Date.now();
+  let cronJobId: string | undefined;
+
   try {
     // Verify cron secret for security
     const authHeader = request.headers.get('authorization');
@@ -26,6 +29,14 @@ export async function POST(request: NextRequest) {
         { status: 401 },
       );
     }
+
+    // Create cron job log entry
+    const [cronJobLog] = await db.insert(cronJobs).values({
+      jobName: 'automated_scans',
+      status: 'running',
+    }).returning();
+
+    cronJobId = cronJobLog?.id;
 
     // Get all active subreddits that are due for scanning
     const now = new Date();
@@ -78,12 +89,43 @@ export async function POST(request: NextRequest) {
       await new Promise(resolve => setTimeout(resolve, 2000));
     }
 
+    // Update cron job log with results
+    if (cronJobId) {
+      const duration = Date.now() - startTime;
+      await db.update(cronJobs)
+        .set({
+          status: 'completed',
+          subredditsProcessed: results.total,
+          scansTriggered: results.successful,
+          errorCount: results.failed,
+          errorMessage: results.errors.length > 0 ? JSON.stringify(results.errors) : null,
+          completedAt: new Date(),
+          duration,
+        })
+        .where(eq(cronJobs.id, cronJobId));
+    }
+
     return NextResponse.json({
       message: 'Scheduled scans completed',
       results,
     });
-  } catch (error: any) {
+  }
+  catch (error: any) {
     console.error('Cron job error:', error);
+
+    // Update cron job log with error
+    if (cronJobId) {
+      const duration = Date.now() - startTime;
+      await db.update(cronJobs)
+        .set({
+          status: 'failed',
+          errorMessage: error.message,
+          completedAt: new Date(),
+          duration,
+        })
+        .where(eq(cronJobs.id, cronJobId));
+    }
+
     return NextResponse.json(
       { error: error.message || 'Failed to run scheduled scans' },
       { status: 500 },

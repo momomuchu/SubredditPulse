@@ -181,24 +181,42 @@ class ScanServiceClass {
 
   /**
    * Check if user has enough credits and deduct them
+   * Uses database transaction with row locking to prevent race conditions
    */
   private async checkAndDeductCredits(userId: string, amount: number): Promise<boolean> {
-    const [userCredit] = await db.select()
-      .from(userCredits)
-      .where(eq(userCredits.userId, userId))
-      .limit(1);
+    try {
+      const result = await db.transaction(async (tx) => {
+        // Lock the row for update to prevent concurrent modifications
+        const [userCredit] = await tx
+          .select()
+          .from(userCredits)
+          .where(eq(userCredits.userId, userId))
+          .limit(1)
+          .for('update'); // PostgreSQL: SELECT FOR UPDATE
 
-    if (!userCredit || userCredit.credits < amount) {
+        // Check if credits exist and are sufficient
+        if (!userCredit || userCredit.credits < amount) {
+          return false;
+        }
+
+        // Deduct credits atomically
+        await tx
+          .update(userCredits)
+          .set({
+            credits: userCredit.credits - amount,
+            updatedAt: new Date(),
+          })
+          .where(eq(userCredits.id, userCredit.id));
+
+        return true;
+      });
+
+      return result;
+    }
+    catch (error) {
+      console.error('Error deducting credits:', error);
       return false;
     }
-
-    await db.update(userCredits)
-      .set({
-        credits: userCredit.credits - amount,
-      })
-      .where(eq(userCredits.id, userCredit.id));
-
-    return true;
   }
 
   /**
