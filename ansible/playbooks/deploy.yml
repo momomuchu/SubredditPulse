@@ -1,0 +1,93 @@
+---
+# ============================================================================
+# Application Deployment Playbook
+# ============================================================================
+# This playbook deploys the Next.js application to configured servers
+# Usage: ansible-playbook playbooks/deploy.yml
+# ============================================================================
+
+- name: Deploy Next.js Boilerplate Application
+  hosts: web
+  become: true
+
+  vars_prompt:
+    - name: "git_branch"
+      prompt: "Which branch to deploy?"
+      default: "main"
+      private: no
+
+  tasks:
+    - name: Create application directory
+      ansible.builtin.file:
+        path: "{{ app_dir }}"
+        state: directory
+        owner: "{{ app_user }}"
+        group: "{{ app_group }}"
+        mode: '0755'
+
+    - name: Clone or update repository
+      ansible.builtin.git:
+        repo: "https://github.com/your-org/Next-js-Boilerplate.git"
+        dest: "{{ app_dir }}"
+        version: "{{ git_branch }}"
+        force: yes
+      become_user: "{{ app_user }}"
+      notify: restart application
+
+    - name: Copy environment file
+      ansible.builtin.template:
+        src: ../templates/.env.production.j2
+        dest: "{{ app_dir }}/.env.production"
+        owner: "{{ app_user }}"
+        group: "{{ app_group }}"
+        mode: '0600'
+      notify: restart application
+
+    - name: Build Docker image
+      community.docker.docker_image:
+        name: "{{ app_name }}"
+        tag: latest
+        build:
+          path: "{{ app_dir }}"
+          dockerfile: Dockerfile
+        source: build
+        force_source: yes
+
+    - name: Stop existing containers
+      community.docker.docker_compose:
+        project_src: "{{ app_dir }}"
+        state: absent
+        files:
+          - docker-compose.yml
+      ignore_errors: yes
+
+    - name: Start application with Docker Compose
+      community.docker.docker_compose:
+        project_src: "{{ app_dir }}"
+        state: present
+        pull: yes
+        files:
+          - docker-compose.yml
+        profiles:
+          - prod
+
+    - name: Wait for application to be ready
+      ansible.builtin.uri:
+        url: "http://localhost:{{ app_port }}/api/health"
+        status_code: 200
+      register: result
+      until: result.status == 200
+      retries: 30
+      delay: 2
+
+    - name: Display deployment status
+      ansible.builtin.debug:
+        msg: "Application deployed successfully!"
+
+  handlers:
+    - name: restart application
+      community.docker.docker_compose:
+        project_src: "{{ app_dir }}"
+        restarted: yes
+        files:
+          - docker-compose.yml

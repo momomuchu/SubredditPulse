@@ -1,0 +1,226 @@
+{
+  "RootLayout": {
+    "home_link": "Accueil",
+    "about_link": "A propos",
+    "sign_in_link": "Se connecter",
+    "sign_up_link": "S'inscrire",
+    "privacy_link": "Politique de confidentialité",
+    "terms_link": "Conditions d'utilisation",
+    "cookies_link": "Politique des cookies"
+  },
+  "BaseTemplate": {
+    "description": "Code de démarrage pour Next.js avec Tailwind CSS",
+    "made_with": "Fait avec <author></author>."
+  },
+  "Index": {
+    "meta_title": "Présentation de Next.js Boilerplate",
+    "meta_description": "Next js Boilerplate est le code de démarrage parfait pour votre projet. Construisez votre application React avec le framework Next.js.",
+    "sponsors_title": "Partenaires"
+  },
+  "Counter": {
+    "meta_title": "Compteur",
+    "meta_description": "Un exemple d'opération DB",
+    "security_powered_by": "Sécurité, détection de bot et rate limiting propulsés par"
+  },
+  "CounterForm": {
+    "presentation": "Le compteur est stocké dans la base de données et incrémenté par la valeur que vous fournissez.",
+    "label_increment": "Incrémenter de",
+    "button_increment": "Incrémenter",
+    "error_increment_range": "La valeur doit être entre 1 et 3"
+  },
+  "CurrentCount": {
+    "count": "Nombre : {count}"
+  },
+  "About": {
+    "meta_title": "A propos",
+    "meta_description": "A propos description",
+    "about_paragraph": "Bienvenue sur notre page À propos ! Nous sommes une équipe de passionnés et dévoués à la création de logiciels.",
+    "translation_powered_by": "Traduction propulsée par"
+  },
+  "Privacy": {
+    "meta_title": "Politique de confidentialité",
+    "meta_description": "Notre politique de confidentialité explique comment nous collectons, utilisons et protégeons vos informations personnelles.",
+    "heading": "Politique de confidentialité",
+    "last_updated": "Dernière mise à jour : {date}",
+    "intro": "Cette Politique de confidentialité décrit comment nous collectons, utilisons et partageons vos informations personnelles lorsque vous utilisez nos services.",
+    "collection_heading": "Informations que nous collectons",
+    "collection_content": "Nous collectons les informations que vous nous fournissez directement, comme lorsque vous créez un compte, vous abonnez à nos services ou nous contactez pour obtenir de l'aide. Cela peut inclure votre nom, votre adresse e-mail et toute autre information que vous choisissez de fournir.",
+    "use_heading": "Comment nous utilisons vos informations",
+    "use_content": "Nous utilisons les informations que nous collectons pour fournir, maintenir et améliorer nos services, pour communiquer avec vous et pour nous conformer aux obligations légales.",
+    "sharing_heading": "Partage d'informations",
+    "sharing_content": "Nous ne vendons pas vos informations personnelles. Nous pouvons partager vos informations avec des prestataires de services qui effectuent des services en notre nom, ou lorsque la loi l'exige.",
+    "security_heading": "Sécurité des données",
+    "security_content": "Nous mettons en œuvre des mesures techniques et organisationnelles appropriées pour protéger vos informations personnelles contre tout accès, modification ou destruction non autorisés.",
+    "rights_heading": "Vos droits",
+    "rights_content": "Vous avez le droit d'accéder, de corriger ou de supprimer vos informations personnelles. Vous pouvez également avoir le droit de vous opposer ou de restreindre certains traitements de vos données.",
+    "contact_heading": "Nous contacter",
+    "contact_content": "Si vous avez des questions concernant cette Politique de confidentialité, veuillez nous contacter à privacy@example.com."
+  },
+  "Terms": {
+    "meta_title": "Conditions d'utilisation",
+    "meta_description": "Conditions générales régissant l'utilisation de nos services.",
+    "heading": "Conditions d'utilisation",
+    "last_updated": "Dernière mise à jour : {date}",
+    "intro": "En accédant et en utilisant nos services, vous acceptez d'être lié par ces Conditions d'utilisation.",
+    "acceptance_heading": "Acceptation des conditions",
+    "acceptance_content": "En accédant ou en utilisant notre service, vous acceptez d'être lié par ces Conditions. Si vous n'êtes pas d'accord avec une partie des conditions, vous ne pouvez pas accéder au service.",
+    "use_heading": "Utilisation du service",
+    "use_content": "Vous acceptez d'utiliser le service uniquement à des fins légales et conformément à ces Conditions. Vous êtes responsable du maintien de la confidentialité de vos identifiants de compte.",
+    "restrictions_heading": "Restrictions",
+    "restrictions_content": "Vous ne pouvez pas : (a) modifier ou copier les matériaux ; (b) utiliser les matériaux à des fins commerciales ; (c) tenter de décompiler tout logiciel contenu dans le service ; (d) supprimer tout droit d'auteur ou notation propriétaire des matériaux.",
+    "termination_heading": "Résiliation",
+    "termination_content": "Nous pouvons résilier ou suspendre votre compte et votre accès au service immédiatement, sans préavis ni responsabilité, pour quelque raison que ce soit, y compris la violation de ces Conditions.",
+    "limitation_heading": "Limitation de responsabilité",
+    "limitation_content": "En aucun cas, nous ne serons responsables de tout dommage indirect, accessoire, spécial, consécutif ou punitif, y compris, sans s'y limiter, la perte de profits, de données, d'utilisation, de bonne volonté ou d'autres pertes intangibles.",
+    "changes_heading": "Modifications des conditions",
+    "changes_content": "Nous nous réservons le droit de modifier ou de remplacer ces Conditions à tout moment. Nous vous informerons de toute modification en publiant les nouvelles Conditions sur cette page.",
+    "contact_heading": "Nous contacter",
+    "contact_content": "Si vous avez des questions concernant ces Conditions, veuillez nous contacter à legal@example.com."
+  },
+  "Cookies": {
+    "meta_title": "Politique des cookies",
+    "meta_description": "Informations sur la manière dont nous utilisons les cookies et les technologies similaires.",
+    "heading": "Politique des cookies",
+    "last_updated": "Dernière mise à jour : {date}",
+    "intro": "Cette Politique des cookies explique comment nous utilisons les cookies et les technologies similaires pour vous reconnaître lorsque vous visitez notre site Web.",
+    "what_heading": "Que sont les cookies",
+    "what_content": "Les cookies sont de petits morceaux de texte envoyés à votre navigateur Web par un site Web que vous visitez. Un fichier cookie est stocké dans votre navigateur Web et permet au service ou à un tiers de vous reconnaître et de faciliter votre prochaine visite et de rendre le service plus utile pour vous.",
+    "use_heading": "Comment nous utilisons les cookies",
+    "use_content": "Nous utilisons des cookies pour comprendre comment vous utilisez notre service et pour améliorer votre expérience. Cela comprend la personnalisation du contenu et de la publicité, la fourniture de fonctionnalités de médias sociaux et l'analyse de notre trafic.",
+    "types_heading": "Types de cookies que nous utilisons",
+    "types_essential": "Cookies essentiels : Requis pour le fonctionnement de notre site Web.",
+    "types_analytics": "Cookies analytiques : Nous aident à comprendre comment les visiteurs interagissent avec notre site Web.",
+    "types_functional": "Cookies fonctionnels : Activent des fonctionnalités personnalisées et mémorisent vos préférences.",
+    "types_advertising": "Cookies publicitaires : Utilisés pour vous diffuser des publicités pertinentes.",
+    "control_heading": "Comment contrôler les cookies",
+    "control_content": "Vous pouvez contrôler et gérer les cookies de différentes manières. Veuillez noter que la suppression ou le blocage des cookies peut avoir un impact sur votre expérience utilisateur et certaines fonctionnalités peuvent ne plus être disponibles.",
+    "browser_heading": "Paramètres du navigateur",
+    "browser_content": "La plupart des navigateurs Web vous permettent de contrôler les cookies via leurs préférences de paramètres. Cependant, la limitation des cookies peut avoir un impact sur votre expérience de notre site Web.",
+    "contact_heading": "Nous contacter",
+    "contact_content": "Si vous avez des questions concernant notre utilisation des cookies, veuillez nous contacter à privacy@example.com."
+  },
+  "Portfolio": {
+    "meta_title": "Portfolio",
+    "meta_description": "Bienvenue sur la page de mon portfolio !",
+    "presentation": "Bienvenue sur ma page portfolio ! Vous trouverez ici une collection soigneusement organisée de mon travail et de mes réalisations. À travers ce portfolio, je mets en valeur mon expertise, ma créativité et la valeur que je peux apporter à vos projets.",
+    "portfolio_name": "Portfolio {name}",
+    "error_reporting_powered_by": "Rapport d'erreur propulsé par",
+    "coverage_powered_by": "Couverture de code propulsée par"
+  },
+  "PortfolioSlug": {
+    "meta_title": "Portfolio {slug}",
+    "meta_description": "Description du Portfolio {slug}",
+    "header": "Portfolio {slug}",
+    "content": "Créé un ensemble de matériel promotionnel et d'éléments de marquage pour un événement d'entreprise. Conçu un thème visuellement unifié, englobant un logo, des affiches, des bannières et des actifs numériques. Intégrer l'identité de marque du client tout en l'insufflant à une approche contemporaine et innovante.",
+    "code_review_powered_by": "Code review propulsé par"
+  },
+  "SignIn": {
+    "meta_title": "Se connecter",
+    "meta_description": "Connectez-vous à votre compte avec facilité.",
+    "cta_github": "Continuer avec GitHub",
+    "cta_google": "Continuer avec Google",
+    "helper": "Choisissez votre fournisseur préféré ou utilisez votre email et mot de passe.",
+    "credentials_heading": "Se connecter avec un email",
+    "credentials_helper": "Utilisez l'email et le mot de passe créés pour ce compte.",
+    "email_label": "Email",
+    "password_label": "Mot de passe",
+    "credentials_submit": "Se connecter",
+    "credentials_error": "Email ou mot de passe invalide.",
+    "badge_title": "Sécurisé par conception",
+    "hero_heading": "Ravi de vous revoir",
+    "hero_subheading": "Retrouvez vos tableaux de bord, gérez vos projets et reprenez votre travail en quelques secondes."
+  },
+  "SignUp": {
+    "meta_title": "S'inscrire",
+    "meta_description": "Créez un compte facilement grâce à notre processus d'inscription intuitif.",
+    "cta_github": "Créer votre compte avec GitHub",
+    "cta_google": "Créer votre compte avec Google",
+    "helper": "Sélectionnez GitHub, Google ou créez un accès classique avec email et mot de passe.",
+    "credentials_heading": "Créer un compte par email",
+    "credentials_helper": "Définissez un mot de passe pour vous connecter sans fournisseur social.",
+    "name_label": "Nom (optionnel)",
+    "email_label": "Email",
+    "password_label": "Mot de passe",
+    "credentials_submit": "Créer le compte",
+    "credentials_error_taken": "Un compte existe déjà pour cet email.",
+    "credentials_error_generic": "Impossible de créer votre compte. Veuillez réessayer.",
+    "badge_title": "Commencez gratuitement",
+    "hero_heading": "Créez votre compte en moins d’une minute",
+    "hero_subheading": "Connectez-vous avec un fournisseur social ou créez des identifiants classiques. Vous pourrez en ajouter d’autres plus tard."
+  },
+  "Dashboard": {
+    "meta_title": "Tableau de bord",
+    "hello_message": "Bonjour {email} !",
+    "alternative_message": "Vous voulez créer votre SaaS plus rapidement en utilisant la même stack ? Essayez <url></url>.",
+    "badge_label": "Tout est prêt",
+    "greeting_title": "Bon retour parmi nous, {name}",
+    "greeting_subtitle": "Votre espace de travail centralise projets, métriques et prochaines tâches. Tout reste synchronisé, quel que soit le thème utilisé.",
+    "email_caption": "Connecté en tant que",
+    "guest_label": "cher utilisateur",
+    "quick_actions_title": "Actions rapides",
+    "quick_actions_subtitle": "Accédez immédiatement à vos prochaines étapes.",
+    "action_new_project": "Créer un nouveau projet",
+    "action_new_project_desc": "Lancez une nouvelle idée en quelques minutes avec nos modèles.",
+    "action_view_docs": "Consulter la documentation",
+    "action_view_docs_desc": "Passez en revue les notes d'intégration et les guides de déploiement.",
+    "action_open_settings": "Ouvrir les paramètres",
+    "action_open_settings_desc": "Gérez les accès de l'équipe, la facturation et les politiques de sécurité.",
+    "manage_account_label": "Compte et facturation",
+    "manage_account_title": "Gérez votre compte en un seul endroit",
+    "manage_account_subtitle": "Gardez vos informations de facturation, les accès de l'équipe et vos politiques de sécurité alignés sur l'évolution de votre produit.",
+    "manage_account_profile_cta": "Modifier profil et sécurité",
+    "manage_account_point_billing": "Mettez à jour le moyen de paiement, téléchargez vos factures ou changez de plan via Stripe Billing.",
+    "manage_account_point_profile": "Modifiez en quelques secondes vos informations de profil et les fournisseurs d'identité connectés.",
+    "manage_account_point_security": "Consultez les connexions des appareils et activez l'authentification sans mot de passe pour votre équipe."
+  },
+  "UserProfile": {
+    "meta_title": "Profil de l'utilisateur",
+    "heading": "Détails du compte",
+    "description": "Consultez les informations reçues de votre fournisseur d'identité connecté.",
+    "name_label": "Nom",
+    "email_label": "Email",
+    "provider_label": "Fournisseurs connectés",
+    "provider_password": "Email et mot de passe",
+    "missing_value": "Non disponible",
+    "sign_out": "Se déconnecter"
+  },
+  "DashboardLayout": {
+    "dashboard_link": "Tableau de bord",
+    "user_profile_link": "Gérer votre compte",
+    "sign_out": "Se déconnecter"
+  },
+  "DashboardBilling": {
+    "manage_billing_cta": "Gérer la facturation",
+    "opening_portal": "Ouverture du portail de facturation…",
+    "missing_customer": "Aucune information de facturation trouvée pour cet espace de travail pour le moment.",
+    "not_authenticated": "Veuillez vous connecter pour gérer la facturation.",
+    "generic_error": "Impossible d'ouvrir le portail de facturation pour le moment. Réessayez dans quelques instants."
+  },
+  "DashboardPayments": {
+    "label": "Acheter des crédits",
+    "title": "Rechargez vos crédits à l'usage",
+    "subtitle": "Choisissez un pack adapté à votre charge de travail. Les crédits n'expirent jamais et sont appliqués immédiatement.",
+    "credits_included": "{credits} crédits inclus",
+    "note": "Besoin d'un pack plus important ou d'une facturation personnalisée ? Contactez-nous pour construire une offre sur mesure.",
+    "generic_error": "Impossible de démarrer la session de paiement. Veuillez réessayer.",
+    "error_unauthenticated": "Veuillez vous connecter pour acheter des crédits.",
+    "error_validation": "Ce pack de crédits n'est plus disponible.",
+    "error_stripe": "Stripe a refusé la requête. Vérifiez vos informations de facturation et réessayez.",
+    "packages": {
+      "starter": {
+        "name": "Pack Découverte"
+      },
+      "builder": {
+        "name": "Pack Constructeur"
+      },
+      "scale": {
+        "name": "Pack Croissance"
+      }
+    }
+  },
+  "LocaleSwitcher": {
+    "aria_label": "Changer de langue",
+    "locale_en": "Anglais",
+    "locale_fr": "Français"
+  }
+}

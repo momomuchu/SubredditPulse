@@ -1,0 +1,246 @@
+# Next.js Boilerplate - LLM Context File
+# This file provides structured information about the project for Large Language Models
+# Similar to robots.txt, but designed for AI assistants to understand the codebase
+
+# Project Information
+> Project: Next.js Boilerplate
+> Version: 16+
+> Description: Production-ready Next.js starter with TypeScript, Tailwind CSS 4, and comprehensive tooling
+> Repository: https://github.com/ixartz/Next-js-Boilerplate
+> Demo: https://demo.nextjs-boilerplate.com
+
+# Technology Stack
+## Core Framework
+- Next.js 16+ (App Router)
+- React 19
+- TypeScript 5.9+
+- Node.js 20+
+
+## Styling
+- Tailwind CSS 4.1+
+- Custom CSS with @layer components
+- CSS Custom Properties for theming
+- PostCSS with @tailwindcss/postcss
+
+## Authentication & Security
+- Auth.js (NextAuth.js) 5.0-beta
+- Arcjet (Bot detection, Rate limiting, Attack protection)
+- bcryptjs for password hashing
+- CSRF protection built-in
+
+## Database & ORM
+- Drizzle ORM 0.44+
+- PostgreSQL (production)
+- PGlite (local development - no Docker required)
+- DrizzleORM adapter for Auth.js
+
+## Payment Processing
+- Stripe integration
+- Webhook handling for payment status
+- One-time checkout sessions
+
+## Storage
+- S3-Compatible storage module
+- Cloudflare R2 support
+- AWS S3, MinIO compatibility
+
+## Testing & Quality
+- Vitest (unit/integration testing)
+- Playwright (E2E testing)
+- Testing Library (React component testing)
+- Storybook (component documentation)
+- ESLint 9+ (@antfu/eslint-config)
+- TypeScript strict mode
+
+## Monitoring & Analytics
+- Sentry (Error monitoring)
+- PostHog (Product analytics)
+- Better Stack (Logging)
+- LogTape (Logging library)
+- Spotlight (Development debugging)
+
+## i18n & Content
+- next-intl (internationalization)
+- MDX support (@next/mdx, next-mdx-remote)
+- Gray matter (MDX frontmatter)
+- Multi-language article system
+
+## Development Tools
+- Lefthook (Git hooks)
+- Commitlint (Conventional commits)
+- lint-staged (Pre-commit linting)
+- Semantic release
+- Bundle analyzer
+- Knip (Unused code detection)
+
+## CI/CD & Monitoring
+- Checkly (Monitoring as Code)
+- GitHub Actions ready
+- Playwright for E2E testing
+
+# Project Structure
+## Key Directories
+- /src - Application source code
+  - /app - Next.js App Router pages and layouts
+  - /components - React components
+  - /styles - Global styles and Tailwind configuration
+  - /locales - i18n translation files
+  - /libs - Utility libraries and helpers
+  - /models - Database models and schemas
+  - /templates - Page templates
+  - /utils - Utility functions
+
+- /public - Static assets
+  - /assets - Images, icons, fonts
+
+- /tests - Test files
+- /.storybook - Storybook configuration
+
+## Important Configuration Files
+- tailwind.config.mjs - Tailwind CSS configuration with custom theme
+- postcss.config.mjs - PostCSS configuration
+- next.config.ts - Next.js configuration
+- drizzle.config.ts - Drizzle ORM configuration
+- auth.config.ts - Authentication configuration
+- eslint.config.mjs - ESLint rules
+- playwright.config.ts - E2E test configuration
+- vitest.config.ts - Unit test configuration
+- tsconfig.json - TypeScript configuration
+- package.json - Dependencies and scripts
+
+## Key Features
+1. Authentication System
+   - Email/Password authentication
+   - OAuth (GitHub, Google)
+   - Session management with Auth.js
+   - Protected routes and middleware
+
+2. Database Integration
+   - Type-safe ORM with Drizzle
+   - Migration system
+   - Local development with PGlite
+   - Production-ready PostgreSQL support
+
+3. Payment System
+   - Stripe checkout integration
+   - Webhook handling
+   - Payment status tracking
+
+4. Storage System
+   - Multi-provider S3-compatible storage
+   - File upload handling
+   - CDN integration support
+
+5. Multi-language Support
+   - next-intl integration
+   - MDX articles with language support
+   - Translation management
+
+6. Security Features
+   - Arcjet protection layer
+   - Rate limiting
+   - Bot detection
+   - Attack protection
+   - Environment validation with @t3-oss/env-nextjs
+
+7. Monitoring & Observability
+   - Error tracking with Sentry
+   - Product analytics with PostHog
+   - Centralized logging with Better Stack
+   - Development debugging with Spotlight
+
+# Development Commands
+- npm run dev - Start development server (with PGlite)
+- npm run build - Build for production
+- npm run start - Start production server
+- npm run lint - Run ESLint
+- npm run lint:fix - Fix ESLint issues
+- npm run check:types - Type checking
+- npm run test - Run unit tests
+- npm run test:e2e - Run E2E tests
+- npm run db:generate - Generate database migrations
+- npm run db:migrate - Run migrations
+- npm run db:studio - Open Drizzle Studio
+- npm run storybook - Start Storybook
+
+# Environment Variables
+See .env.example for complete list. Key variables:
+- NEXT_PUBLIC_APP_URL - Application URL
+- DATABASE_URL - Database connection string
+- AUTH_SECRET - Authentication secret
+- GITHUB_CLIENT_ID/SECRET - GitHub OAuth
+- GOOGLE_CLIENT_ID/SECRET - Google OAuth
+- STRIPE_PUBLISHABLE_KEY - Stripe public key
+- STRIPE_SECRET_KEY - Stripe secret key
+- ARCJET_KEY - Security features
+- NEXT_PUBLIC_POSTHOG_KEY - Analytics
+- STORAGE_* - S3-compatible storage configuration
+
+# Theming System
+Colors are managed through CSS custom properties in src/styles/theme.css:
+- --color-primary (default: #6366f1)
+- --color-secondary (default: #f97316)
+- Multiple theme variants (default, aurora)
+- Tailwind utilities generated via tailwind.config.mjs
+
+# Code Style
+- TypeScript strict mode enabled
+- ESLint with @antfu/eslint-config
+- Functional components with hooks
+- Server Components by default (App Router)
+- Client Components marked with 'use client'
+- Conventional commits enforced
+
+# Best Practices
+1. Use Server Components for data fetching
+2. Client Components only when needed (interactivity, hooks)
+3. Environment variables validated at build time
+4. Type-safe database queries with Drizzle
+5. Internationalization for all user-facing text
+6. Error boundaries for graceful error handling
+7. Proper loading and error states
+8. Accessibility (a11y) compliance
+9. SEO optimization with metadata API
+10. Security-first approach (Arcjet, CSP, etc.)
+
+# Common Tasks
+## Adding a new page
+1. Create route in src/app/[locale]/
+2. Add translations in src/locales/
+3. Update navigation if needed
+
+## Adding authentication
+- Already configured with Auth.js
+- Protect routes with middleware
+- Use useSession() hook in Client Components
+- Use auth() in Server Components
+
+## Database changes
+1. Modify schema in src/models/
+2. Run: npm run db:generate
+3. Run: npm run db:migrate
+
+## Adding API routes
+- Create in src/app/api/
+- Use route handlers (GET, POST, etc.)
+- Add rate limiting with Arcjet
+
+## Styling components
+- Use Tailwind utilities (bg-primary, text-secondary, etc.)
+- Custom components in src/styles/theme.css
+- Responsive design with Tailwind breakpoints
+
+# Documentation
+For detailed documentation, visit:
+- Project README.md
+- .env.example for environment setup
+- Individual component Storybook stories
+- Inline code documentation
+
+# Support
+- GitHub Issues: Report bugs and feature requests
+- Demo: https://demo.nextjs-boilerplate.com
+- Documentation: Check README.md and inline comments
+
+---
+Last updated: 2025-01

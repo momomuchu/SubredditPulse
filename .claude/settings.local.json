@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rm:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run build:next:*)",
+      "Bash(ls:*)",
+      "Bash(npm run lint:fix:*)",
+      "Bash(npm run check:types:*)",
+      "Bash(npm run lint:*)",
+      "Bash(tree:*)",
+      "Bash(npm run build:*)",
+      "Bash(cat:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

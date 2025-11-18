@@ -1,0 +1,49 @@
+# ============================================================================
+# Terraform Variables Example
+# ============================================================================
+# Copy this file to terraform.tfvars and update with your values
+# DO NOT commit terraform.tfvars to version control
+# ============================================================================
+
+# General Configuration
+project_name = "nextjs-boilerplate"
+environment  = "production"
+aws_region   = "us-east-1"
+
+# Networking
+vpc_cidr             = "10.0.0.0/16"
+public_subnet_cidrs  = ["10.0.1.0/24", "10.0.2.0/24"]
+private_subnet_cidrs = ["10.0.11.0/24", "10.0.12.0/24"]
+
+# Database
+db_instance_class       = "db.t3.small"
+db_allocated_storage    = 20
+db_name                 = "nextjs_boilerplate"
+db_username             = "dbadmin"
+db_password             = "CHANGE_ME_TO_SECURE_PASSWORD"
+backup_retention_period = 7
+
+# Compute
+instance_type        = "t3.small"
+key_name             = "your-ssh-key-name"
+asg_min_size         = 1
+asg_max_size         = 4
+asg_desired_capacity = 2
+
+# SSL Certificate ARN (from AWS Certificate Manager)
+certificate_arn = "arn:aws:acm:us-east-1:123456789:certificate/xxxxx"
+
+# Application Environment Variables
+environment_variables = {
+  NODE_ENV                    = "production"
+  NEXT_TELEMETRY_DISABLED     = "1"
+  NEXT_PUBLIC_APP_URL         = "https://yourdomain.com"
+  AUTH_SECRET                 = "your-auth-secret-here"
+  GITHUB_CLIENT_ID            = "your-github-client-id"
+  GITHUB_CLIENT_SECRET        = "your-github-client-secret"
+  GOOGLE_CLIENT_ID            = "your-google-client-id"
+  GOOGLE_CLIENT_SECRET        = "your-google-client-secret"
+  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_live_your_key"
+  STRIPE_SECRET_KEY           = "sk_live_your_key"
+  STRIPE_WEBHOOK_SECRET       = "whsec_your_secret"
+}

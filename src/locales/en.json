@@ -1,0 +1,226 @@
+{
+  "RootLayout": {
+    "home_link": "Home",
+    "about_link": "About",
+    "sign_in_link": "Sign in",
+    "sign_up_link": "Sign up",
+    "privacy_link": "Privacy Policy",
+    "terms_link": "Terms of Service",
+    "cookies_link": "Cookie Policy"
+  },
+  "BaseTemplate": {
+    "description": "Starter code for your Nextjs Boilerplate with Tailwind CSS",
+    "made_with": "Made with <author></author>."
+  },
+  "Index": {
+    "meta_title": "Next.js Boilerplate Presentation",
+    "meta_description": "Next js Boilerplate is the perfect starter code for your project. Build your React application with the Next.js framework.",
+    "sponsors_title": "Sponsors"
+  },
+  "Counter": {
+    "meta_title": "Counter",
+    "meta_description": "An example of DB operation",
+    "security_powered_by": "Security, bot detection and rate limiting powered by"
+  },
+  "CounterForm": {
+    "presentation": "The counter is stored in the database and incremented by the value you provide.",
+    "label_increment": "Increment by",
+    "button_increment": "Increment",
+    "error_increment_range": "Value must be between 1 and 3"
+  },
+  "CurrentCount": {
+    "count": "Count: {count}"
+  },
+  "About": {
+    "meta_title": "About",
+    "meta_description": "About page description",
+    "about_paragraph": "Welcome to our About page! We are a team of passionate individuals dedicated to creating amazing software.",
+    "translation_powered_by": "Translation powered by"
+  },
+  "Privacy": {
+    "meta_title": "Privacy Policy",
+    "meta_description": "Our privacy policy outlines how we collect, use, and protect your personal information.",
+    "heading": "Privacy Policy",
+    "last_updated": "Last Updated: {date}",
+    "intro": "This Privacy Policy describes how we collect, use, and share your personal information when you use our services.",
+    "collection_heading": "Information We Collect",
+    "collection_content": "We collect information you provide directly to us, such as when you create an account, subscribe to our services, or contact us for support. This may include your name, email address, and any other information you choose to provide.",
+    "use_heading": "How We Use Your Information",
+    "use_content": "We use the information we collect to provide, maintain, and improve our services, to communicate with you, and to comply with legal obligations.",
+    "sharing_heading": "Information Sharing",
+    "sharing_content": "We do not sell your personal information. We may share your information with service providers who perform services on our behalf, or when required by law.",
+    "security_heading": "Data Security",
+    "security_content": "We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, or destruction.",
+    "rights_heading": "Your Rights",
+    "rights_content": "You have the right to access, correct, or delete your personal information. You may also have the right to object to or restrict certain processing of your data.",
+    "contact_heading": "Contact Us",
+    "contact_content": "If you have questions about this Privacy Policy, please contact us at privacy@example.com."
+  },
+  "Terms": {
+    "meta_title": "Terms of Service",
+    "meta_description": "Terms and conditions governing the use of our services.",
+    "heading": "Terms of Service",
+    "last_updated": "Last Updated: {date}",
+    "intro": "By accessing and using our services, you agree to be bound by these Terms of Service.",
+    "acceptance_heading": "Acceptance of Terms",
+    "acceptance_content": "By accessing or using our service, you agree to be bound by these Terms. If you disagree with any part of the terms, you may not access the service.",
+    "use_heading": "Use of Service",
+    "use_content": "You agree to use the service only for lawful purposes and in accordance with these Terms. You are responsible for maintaining the confidentiality of your account credentials.",
+    "restrictions_heading": "Restrictions",
+    "restrictions_content": "You may not: (a) modify or copy the materials; (b) use the materials for any commercial purpose; (c) attempt to reverse engineer any software contained in the service; (d) remove any copyright or proprietary notations from the materials.",
+    "termination_heading": "Termination",
+    "termination_content": "We may terminate or suspend your account and access to the service immediately, without prior notice or liability, for any reason, including breach of these Terms.",
+    "limitation_heading": "Limitation of Liability",
+    "limitation_content": "In no event shall we be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses.",
+    "changes_heading": "Changes to Terms",
+    "changes_content": "We reserve the right to modify or replace these Terms at any time. We will provide notice of any changes by posting the new Terms on this page.",
+    "contact_heading": "Contact Us",
+    "contact_content": "If you have questions about these Terms, please contact us at legal@example.com."
+  },
+  "Cookies": {
+    "meta_title": "Cookie Policy",
+    "meta_description": "Information about how we use cookies and similar technologies.",
+    "heading": "Cookie Policy",
+    "last_updated": "Last Updated: {date}",
+    "intro": "This Cookie Policy explains how we use cookies and similar technologies to recognize you when you visit our website.",
+    "what_heading": "What Are Cookies",
+    "what_content": "Cookies are small pieces of text sent to your web browser by a website you visit. A cookie file is stored in your web browser and allows the service or a third-party to recognize you and make your next visit easier and the service more useful to you.",
+    "use_heading": "How We Use Cookies",
+    "use_content": "We use cookies to understand how you use our service and to improve your experience. This includes personalizing content and advertising, providing social media features, and analyzing our traffic.",
+    "types_heading": "Types of Cookies We Use",
+    "types_essential": "Essential Cookies: Required for the operation of our website.",
+    "types_analytics": "Analytics Cookies: Help us understand how visitors interact with our website.",
+    "types_functional": "Functional Cookies: Enable personalized features and remember your preferences.",
+    "types_advertising": "Advertising Cookies: Used to deliver relevant advertisements to you.",
+    "control_heading": "How to Control Cookies",
+    "control_content": "You can control and manage cookies in various ways. Please note that removing or blocking cookies can impact your user experience and some functionality may no longer be available.",
+    "browser_heading": "Browser Settings",
+    "browser_content": "Most web browsers allow you to control cookies through their settings preferences. However, limiting cookies may impact your experience of our website.",
+    "contact_heading": "Contact Us",
+    "contact_content": "If you have questions about our use of cookies, please contact us at privacy@example.com."
+  },
+  "Portfolio": {
+    "meta_title": "Portfolio",
+    "meta_description": "Welcome to my portfolio page!",
+    "presentation": "Welcome to my portfolio page! Here you will find a carefully curated collection of my work and accomplishments. Through this portfolio, I'm to showcase my expertise, creativity, and the value I can bring to your projects.",
+    "portfolio_name": "Portfolio {name}",
+    "error_reporting_powered_by": "Error reporting powered by",
+    "coverage_powered_by": "Code coverage powered by"
+  },
+  "PortfolioSlug": {
+    "meta_title": "Portfolio {slug}",
+    "meta_description": "Portfolio {slug} description",
+    "header": "Portfolio {slug}",
+    "content": "Created a set of promotional materials and branding elements for a corporate event. Crafted a visually unified theme, encompassing a logo, posters, banners, and digital assets. Integrated the client's brand identity while infusing it with a contemporary and innovative approach.",
+    "code_review_powered_by": "Code review powered by"
+  },
+  "SignIn": {
+    "meta_title": "Sign in",
+    "meta_description": "Seamlessly sign in to your account with our user-friendly login process.",
+    "cta_github": "Continue with GitHub",
+    "cta_google": "Continue with Google",
+    "helper": "Pick your preferred provider below or use email and password.",
+    "credentials_heading": "Sign in with email",
+    "credentials_helper": "Use the email and password you created for this account.",
+    "email_label": "Email",
+    "password_label": "Password",
+    "credentials_submit": "Sign in",
+    "credentials_error": "Invalid email or password.",
+    "badge_title": "Secure by design",
+    "hero_heading": "Welcome back to your workspace",
+    "hero_subheading": "Access dashboards, manage your projects, and pick up where you left off in seconds."
+  },
+  "SignUp": {
+    "meta_title": "Sign up",
+    "meta_description": "Effortlessly create an account through our intuitive sign-up process.",
+    "cta_github": "Create your account with GitHub",
+    "cta_google": "Create your account with Google",
+    "helper": "Choose GitHub, Google, or create a classic email and password login.",
+    "credentials_heading": "Create an email account",
+    "credentials_helper": "Set a password and you will be able to sign in without a social provider.",
+    "name_label": "Name (optional)",
+    "email_label": "Email",
+    "password_label": "Password",
+    "credentials_submit": "Create account",
+    "credentials_error_taken": "An account already exists for this email.",
+    "credentials_error_generic": "We couldn't create your account. Please try again.",
+    "badge_title": "Get started for free",
+    "hero_heading": "Create your account in less than a minute",
+    "hero_subheading": "Choose a social provider or create classic credentials. You can always link more providers later."
+  },
+  "Dashboard": {
+    "meta_title": "Dashboard",
+    "hello_message": "Hello {email}!",
+    "alternative_message": "Want to build your SaaS faster using the same stack? Try <url></url>.",
+    "badge_label": "You're all set",
+    "greeting_title": "Welcome back, {name}",
+    "greeting_subtitle": "This is your hub for projects, metrics, and upcoming work. Everything stays in sync across devices and themes.",
+    "email_caption": "Signed in as",
+    "guest_label": "there",
+    "quick_actions_title": "Quick actions",
+    "quick_actions_subtitle": "Jump straight into what matters next.",
+    "action_new_project": "Start a new project",
+    "action_new_project_desc": "Kick off a fresh idea in minutes with best-practice templates.",
+    "action_view_docs": "Review documentation",
+    "action_view_docs_desc": "Look over integration notes and deployment guides.",
+    "action_open_settings": "Open workspace settings",
+    "action_open_settings_desc": "Manage team access, billing, and security policies.",
+    "manage_account_label": "Account & billing",
+    "manage_account_title": "Manage your account from one place",
+    "manage_account_subtitle": "Keep your billing details, team access, and security policies aligned with how your product grows.",
+    "manage_account_profile_cta": "Edit profile & security",
+    "manage_account_point_billing": "Update payment method, download invoices, or change plans in Stripe Billing.",
+    "manage_account_point_profile": "Edit profile information and connected identity providers in seconds.",
+    "manage_account_point_security": "Review device logins and enable passwordless authentication for your team."
+  },
+  "UserProfile": {
+    "meta_title": "User Profile",
+    "heading": "Account details",
+    "description": "Review the information we receive from your connected identity provider.",
+    "name_label": "Name",
+    "email_label": "Email",
+    "provider_label": "Connected providers",
+    "provider_password": "Email & password",
+    "missing_value": "Not available",
+    "sign_out": "Sign out"
+  },
+  "DashboardLayout": {
+    "dashboard_link": "Dashboard",
+    "user_profile_link": "Manage your account",
+    "sign_out": "Sign out"
+  },
+  "DashboardBilling": {
+    "manage_billing_cta": "Manage billing",
+    "opening_portal": "Opening billing portal…",
+    "missing_customer": "We couldn't find billing information for this workspace yet.",
+    "not_authenticated": "Please sign in to manage billing.",
+    "generic_error": "Unable to open the billing portal right now. Try again in a few moments."
+  },
+  "DashboardPayments": {
+    "label": "Buy credits",
+    "title": "Top up usage-based credits",
+    "subtitle": "Choose a credit pack that suits your workload. Credits never expire and apply instantly.",
+    "credits_included": "{credits} credits included",
+    "note": "Need a larger package or custom billing? Reach out to our team and we can tailor a plan for you.",
+    "generic_error": "We couldn't start the checkout session. Please try again.",
+    "error_unauthenticated": "Please sign in to buy credits.",
+    "error_validation": "That credit package is no longer available.",
+    "error_stripe": "Stripe rejected the request. Check your billing details and try again.",
+    "packages": {
+      "starter": {
+        "name": "Starter pack"
+      },
+      "builder": {
+        "name": "Builder pack"
+      },
+      "scale": {
+        "name": "Scale pack"
+      }
+    }
+  },
+  "LocaleSwitcher": {
+    "aria_label": "Select language",
+    "locale_en": "English",
+    "locale_fr": "Français"
+  }
+}

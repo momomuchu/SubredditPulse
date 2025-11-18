@@ -1,0 +1,55 @@
+---
+# ============================================================================
+# Application Rollback Playbook
+# ============================================================================
+# This playbook rolls back the application to a previous version
+# Usage: ansible-playbook playbooks/rollback.yml
+# ============================================================================
+
+- name: Rollback Next.js Boilerplate Application
+  hosts: web
+  become: true
+
+  vars_prompt:
+    - name: "git_commit"
+      prompt: "Enter commit hash to rollback to"
+      private: no
+
+  tasks:
+    - name: Rollback to specified commit
+      ansible.builtin.git:
+        repo: "https://github.com/your-org/Next-js-Boilerplate.git"
+        dest: "{{ app_dir }}"
+        version: "{{ git_commit }}"
+        force: yes
+      become_user: "{{ app_user }}"
+
+    - name: Rebuild Docker image
+      community.docker.docker_image:
+        name: "{{ app_name }}"
+        tag: latest
+        build:
+          path: "{{ app_dir }}"
+          dockerfile: Dockerfile
+        source: build
+        force_source: yes
+
+    - name: Restart application
+      community.docker.docker_compose:
+        project_src: "{{ app_dir }}"
+        restarted: yes
+        files:
+          - docker-compose.yml
+
+    - name: Wait for application to be ready
+      ansible.builtin.uri:
+        url: "http://localhost:{{ app_port }}/api/health"
+        status_code: 200
+      register: result
+      until: result.status == 200
+      retries: 30
+      delay: 2
+
+    - name: Display rollback status
+      ansible.builtin.debug:
+        msg: "Application rolled back successfully to commit {{ git_commit }}"

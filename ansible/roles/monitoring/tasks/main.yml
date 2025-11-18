@@ -1,0 +1,48 @@
+---
+# ============================================================================
+# Monitoring Role - Main Tasks
+# ============================================================================
+
+- name: Install monitoring tools
+  ansible.builtin.package:
+    name:
+      - htop
+      - iotop
+      - sysstat
+    state: present
+  when: enable_monitoring | default(false)
+
+- name: Create monitoring directory
+  ansible.builtin.file:
+    path: /var/log/app-monitoring
+    state: directory
+    mode: '0755'
+  when: enable_monitoring | default(false)
+
+- name: Create health check script
+  ansible.builtin.copy:
+    content: |
+      #!/bin/bash
+      # Health check script for Next.js application
+
+      APP_URL="http://localhost:{{ app_port }}/api/health"
+      RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" $APP_URL)
+
+      if [ "$RESPONSE" -eq 200 ]; then
+          echo "$(date): Application is healthy (HTTP $RESPONSE)" >> /var/log/app-monitoring/health.log
+          exit 0
+      else
+          echo "$(date): Application is unhealthy (HTTP $RESPONSE)" >> /var/log/app-monitoring/health.log
+          exit 1
+      fi
+    dest: /usr/local/bin/app-health-check.sh
+    mode: '0755'
+  when: enable_monitoring | default(false)
+
+- name: Create cron job for health checks
+  ansible.builtin.cron:
+    name: "Application health check"
+    minute: "*/5"
+    job: "/usr/local/bin/app-health-check.sh"
+    user: root
+  when: enable_monitoring | default(false)

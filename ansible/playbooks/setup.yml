@@ -1,0 +1,35 @@
+---
+# ============================================================================
+# Server Setup Playbook
+# ============================================================================
+# This playbook sets up a fresh server with all required dependencies
+# Usage: ansible-playbook playbooks/setup.yml
+# ============================================================================
+
+- name: Setup Next.js Boilerplate Server
+  hosts: all
+  become: true
+
+  pre_tasks:
+    - name: Update system packages
+      ansible.builtin.package:
+        name: "*"
+        state: latest
+      when: ansible_os_family == "RedHat"
+
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: yes
+        cache_valid_time: 3600
+      when: ansible_os_family == "Debian"
+
+  roles:
+    - common
+    - docker
+    - nginx
+    - monitoring
+
+  post_tasks:
+    - name: Display completion message
+      ansible.builtin.debug:
+        msg: "Server setup completed successfully!"

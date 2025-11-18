@@ -1,0 +1,27 @@
+---
+# ============================================================================
+# Global Variables for All Hosts
+# ============================================================================
+
+# Application Configuration
+app_name: nextjs-boilerplate
+app_user: appuser
+app_group: appuser
+app_dir: /opt/nextjs-boilerplate
+app_port: 3000
+
+# Docker Configuration
+docker_compose_version: "2.23.0"
+
+# Node.js Configuration
+node_version: "20"
+
+# Security
+firewall_allowed_ports:
+  - "22"    # SSH
+  - "80"    # HTTP
+  - "443"   # HTTPS
+  - "3000"  # Application (if direct access needed)
+
+# Timezone
+timezone: "UTC"

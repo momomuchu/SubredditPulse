@@ -1,0 +1,21 @@
+---
+# ============================================================================
+# Variables for Web Servers
+# ============================================================================
+
+# Environment
+environment: production
+
+# Database (override with your actual values)
+database_url: "postgresql://user:pass@db-host:5432/dbname"
+
+# Application URL
+app_url: "https://yourdomain.com"
+
+# SSL/TLS Configuration
+enable_ssl: true
+ssl_cert_path: /etc/ssl/certs/cert.pem
+ssl_key_path: /etc/ssl/private/key.pem
+
+# Monitoring
+enable_monitoring: true

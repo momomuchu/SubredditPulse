@@ -1,0 +1,72 @@
+---
+# ============================================================================
+# Common Role - Main Tasks
+# ============================================================================
+
+- name: Set timezone
+  community.general.timezone:
+    name: "{{ timezone }}"
+
+- name: Install common packages
+  ansible.builtin.package:
+    name:
+      - git
+      - curl
+      - wget
+      - vim
+      - htop
+      - unzip
+      - net-tools
+    state: present
+
+- name: Create application user
+  ansible.builtin.user:
+    name: "{{ app_user }}"
+    shell: /bin/bash
+    create_home: yes
+    state: present
+
+- name: Create application directory
+  ansible.builtin.file:
+    path: "{{ app_dir }}"
+    state: directory
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: '0755'
+
+- name: Configure firewall (firewalld)
+  ansible.posix.firewalld:
+    port: "{{ item }}/tcp"
+    permanent: yes
+    state: enabled
+    immediate: yes
+  loop: "{{ firewall_allowed_ports }}"
+  when: ansible_os_family == "RedHat"
+  ignore_errors: yes
+
+- name: Configure firewall (ufw)
+  community.general.ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  loop: "{{ firewall_allowed_ports }}"
+  when: ansible_os_family == "Debian"
+  ignore_errors: yes
+
+- name: Enable ufw
+  community.general.ufw:
+    state: enabled
+  when: ansible_os_family == "Debian"
+  ignore_errors: yes
+
+- name: Configure system limits
+  ansible.builtin.pam_limits:
+    domain: "{{ app_user }}"
+    limit_type: "{{ item.type }}"
+    limit_item: "{{ item.item }}"
+    value: "{{ item.value }}"
+  loop:
+    - { type: 'soft', item: 'nofile', value: '65536' }
+    - { type: 'hard', item: 'nofile', value: '65536' }
+    - { type: 'soft', item: 'nproc', value: '4096' }
+    - { type: 'hard', item: 'nproc', value: '4096' }
