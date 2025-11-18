@@ -46,7 +46,7 @@ class RedditClient {
       const subreddit = client.getSubreddit(subredditName);
 
       // Fetch hot posts (you can also use getNew(), getTop(), etc.)
-      const posts = await subreddit.getHot({ limit, time: timeframe });
+      const posts = await subreddit.getHot({ limit, time: timeframe } as any);
 
       return posts.map((post: any) => ({
         id: post.id,
@@ -80,7 +80,7 @@ class RedditClient {
 
     try {
       const subreddit = client.getSubreddit(subredditName);
-      const posts = await subreddit.getTop({ limit, time: timeframe });
+      const posts = await subreddit.getTop({ limit, time: timeframe } as any);
 
       return posts.map((post: any) => ({
         id: post.id,
@@ -108,9 +108,9 @@ class RedditClient {
 
     try {
       const submission = client.getSubmission(postId);
-      await submission.expandReplies({ limit, depth: 1 });
+      await (submission.expandReplies as any)({ limit, depth: 1 });
 
-      const comments = submission.comments || [];
+      const comments = (submission as any).comments || [];
 
       return comments.map((comment: any) => ({
         id: comment.id,
@@ -142,7 +142,7 @@ class RedditClient {
         query,
         time: timeframe,
         limit,
-      });
+      } as any);
 
       return posts.map((post: any) => ({
         id: post.id,
@@ -169,7 +169,7 @@ class RedditClient {
 
     try {
       const subreddit = client.getSubreddit(subredditName);
-      const info = await subreddit.fetch();
+      const info = await (subreddit as any).fetch();
 
       return {
         name: info.display_name,

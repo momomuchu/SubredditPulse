@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { desc, eq } from 'drizzle-orm';
 
 import { auth } from '@/auth';
-import { DB } from '@/libs/DB';
+import { db } from '@/libs/DB';
 import { Reddit } from '@/libs/Reddit';
 import { alerts, monitoredSubreddits, subredditKeywords, userCredits } from '@/models/Schema';
 
@@ -18,7 +18,7 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const subreddits = await DB.select()
+    const subreddits = await db.select()
       .from(monitoredSubreddits)
       .where(eq(monitoredSubreddits.userId, session.user.id))
       .orderBy(desc(monitoredSubreddits.createdAt));
@@ -26,9 +26,9 @@ export async function GET() {
     // Get keywords for each subreddit
     const subredditsWithKeywords = await Promise.all(
       subreddits.map(async (subreddit) => {
-        const keywords = await DB.select()
+        const keywords = await db.select()
           .from(subredditKeywords)
-          .where(eq(subredditKeywords.subredditId, subreddit.id));
+          .where(eq(subredditKeywords.subredditId, subreddit!.id));
 
         return {
           ...subreddit,
@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if user already has 3 subreddits
-    const existingCount = await DB.select()
+    const existingCount = await db.select()
       .from(monitoredSubreddits)
       .where(eq(monitoredSubreddits.userId, session.user.id));
 
@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create monitored subreddit
-    const [subreddit] = await DB.insert(monitoredSubreddits)
+    const [subreddit] = await db.insert(monitoredSubreddits)
       .values({
         userId: session.user.id,
         subredditName: subredditName.toLowerCase(),
@@ -113,36 +113,36 @@ export async function POST(request: NextRequest) {
 
     // Add keywords
     const keywordRecords = keywords.map((keyword: string) => ({
-      subredditId: subreddit.id,
+      subredditId: subreddit!.id,
       keyword: keyword.trim(),
     }));
 
-    await DB.insert(subredditKeywords).values(keywordRecords);
+    await db.insert(subredditKeywords).values(keywordRecords);
 
     // Create default alerts
     const defaultAlerts = [
       {
-        subredditId: subreddit.id,
+        subredditId: subreddit!.id,
         alertType: 'sentiment_drop',
         threshold: sentimentThreshold || 0.2,
       },
       {
-        subredditId: subreddit.id,
+        subredditId: subreddit!.id,
         alertType: 'keyword_spike',
         threshold: 3.0,
       },
     ];
 
-    await DB.insert(alerts).values(defaultAlerts);
+    await db.insert(alerts).values(defaultAlerts);
 
     // Initialize user credits if not exists
-    const [existingCredits] = await DB.select()
+    const [existingCredits] = await db.select()
       .from(userCredits)
       .where(eq(userCredits.userId, session.user.id))
       .limit(1);
 
     if (!existingCredits) {
-      await DB.insert(userCredits).values({
+      await db.insert(userCredits).values({
         userId: session.user.id,
         credits: 0,
       });

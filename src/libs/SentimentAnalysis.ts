@@ -166,11 +166,14 @@ class SentimentAnalysisService {
       keywords.forEach((keyword) => {
         const keywordLower = keyword.toLowerCase();
         if (text.includes(keywordLower)) {
-          keywordStats[keyword].mentions += 1;
+          const stats = keywordStats[keyword];
+          if (stats) {
+            stats.mentions += 1;
 
-          // Get sentiment of the post
-          const sentiment = this.analyzeSentiment(text);
-          keywordStats[keyword].sentiments.push(sentiment);
+            // Get sentiment of the post
+            const sentiment = this.analyzeSentiment(text);
+            stats.sentiments.push(sentiment);
+          }
         }
       });
     });
@@ -180,6 +183,10 @@ class SentimentAnalysisService {
 
     Object.keys(keywordStats).forEach((keyword) => {
       const stats = keywordStats[keyword];
+      if (!stats) {
+        return;
+      }
+
       const averageSentiment
         = stats.sentiments.length > 0
           ? stats.sentiments.reduce((sum, s) => sum + s, 0) / stats.sentiments.length

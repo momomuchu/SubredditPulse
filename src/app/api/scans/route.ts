@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { and, desc, eq } from 'drizzle-orm';
 
 import { auth } from '@/auth';
-import { DB } from '@/libs/DB';
+import { db } from '@/libs/DB';
 import { ScanService } from '@/libs/ScanService';
 import { monitoredSubreddits, scanResults, scans } from '@/models/Schema';
 
@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Verify subreddit belongs to user
-    const [subreddit] = await DB.select()
+    const [subreddit] = await db.select()
       .from(monitoredSubreddits)
       .where(
         and(
@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get scans for this subreddit
-    const scanList = await DB.select()
+    const scanList = await db.select()
       .from(scans)
       .where(eq(scans.subredditId, subredditId))
       .orderBy(desc(scans.createdAt))
@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify subreddit belongs to user
-    const [subreddit] = await DB.select()
+    const [subreddit] = await db.select()
       .from(monitoredSubreddits)
       .where(
         and(
@@ -110,12 +110,12 @@ export async function POST(request: NextRequest) {
     }
 
     // Get the completed scan with results
-    const [scan] = await DB.select()
+    const [scan] = await db.select()
       .from(scans)
       .where(eq(scans.id, result.scanId))
       .limit(1);
 
-    const [results] = await DB.select()
+    const [results] = await db.select()
       .from(scanResults)
       .where(eq(scanResults.scanId, result.scanId))
       .limit(1);

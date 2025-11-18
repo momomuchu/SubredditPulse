@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 import { auth } from '@/auth';
-import { DB } from '@/libs/DB';
+import { db } from '@/libs/DB';
 import { eq } from 'drizzle-orm';
 import { desc } from 'drizzle-orm';
 import { monitoredSubreddits, scans, userCredits } from '@/models/Schema';
@@ -14,19 +14,19 @@ export default async function PulseDashboard() {
   }
 
   // Get user's subreddits
-  const subreddits = await DB.select()
+  const subreddits = await db.select()
     .from(monitoredSubreddits)
     .where(eq(monitoredSubreddits.userId, session.user.id))
     .orderBy(desc(monitoredSubreddits.createdAt));
 
   // Get user's credits
-  const [credits] = await DB.select()
+  const [credits] = await db.select()
     .from(userCredits)
     .where(eq(userCredits.userId, session.user.id))
     .limit(1);
 
   // Get recent scans
-  const recentScans = await DB.select()
+  const recentScans = await db.select()
     .from(scans)
     .orderBy(desc(scans.createdAt))
     .limit(5);
@@ -94,7 +94,7 @@ export default async function PulseDashboard() {
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {subreddits.map(subreddit => (
+            {subreddits.map((subreddit: any) => (
               <Link
                 key={subreddit.id}
                 href={`/dashboard/pulse/${subreddit.id}`}
@@ -171,7 +171,7 @@ export default async function PulseDashboard() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {recentScans.map(scan => (
+                {recentScans.map((scan: any) => (
                   <tr key={scan.id}>
                     <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-900">
                       {new Date(scan.createdAt).toLocaleDateString()}

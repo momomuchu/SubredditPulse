@@ -86,6 +86,7 @@
     "@types/node": "^24.9.1",
     "@types/pg": "^8.15.6",
     "@types/react": "^19.2.2",
+    "@types/sentiment": "^5.0.4",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-react": "^5.18.0",
     "@vitejs/plugin-react": "^5.1.0",

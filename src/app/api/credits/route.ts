@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { eq } from 'drizzle-orm';
 
 import { auth } from '@/auth';
-import { DB } from '@/libs/DB';
+import { db } from '@/libs/DB';
 import { userCredits } from '@/models/Schema';
 
 /**
@@ -18,21 +18,21 @@ export async function GET() {
     }
 
     // Get user credits
-    const [credits] = await DB.select()
+    const [credits] = await db.select()
       .from(userCredits)
       .where(eq(userCredits.userId, session.user.id))
       .limit(1);
 
     if (!credits) {
       // Initialize credits for user
-      const [newCredits] = await DB.insert(userCredits)
+      const [newCredits] = await db.insert(userCredits)
         .values({
           userId: session.user.id,
           credits: 0,
         })
         .returning();
 
-      return NextResponse.json({ credits: newCredits.credits });
+      return NextResponse.json({ credits: newCredits!.credits });
     }
 
     return NextResponse.json({ credits: credits.credits });
@@ -67,13 +67,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Get or create user credits
-    const [existingCredits] = await DB.select()
+    const [existingCredits] = await db.select()
       .from(userCredits)
       .where(eq(userCredits.userId, session.user.id))
       .limit(1);
 
     if (existingCredits) {
-      const [updated] = await DB.update(userCredits)
+      const [updated] = await db.update(userCredits)
         .set({
           credits: existingCredits.credits + amount,
         })
@@ -81,12 +81,12 @@ export async function POST(request: NextRequest) {
         .returning();
 
       return NextResponse.json({
-        credits: updated.credits,
+        credits: updated!.credits,
         message: `${amount} credits added successfully`,
       });
     }
 
-    const [newCredits] = await DB.insert(userCredits)
+    const [newCredits] = await db.insert(userCredits)
       .values({
         userId: session.user.id,
         credits: amount,
@@ -94,7 +94,7 @@ export async function POST(request: NextRequest) {
       .returning();
 
     return NextResponse.json({
-      credits: newCredits.credits,
+      credits: newCredits!.credits,
       message: `${amount} credits added successfully`,
     });
   } catch (error: any) {
