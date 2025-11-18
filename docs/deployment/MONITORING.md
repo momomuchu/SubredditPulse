@@ -192,21 +192,21 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
     ports:
-      - "9090:9090"
+      - '9090:9090'
 
   grafana:
     image: grafana/grafana:latest
     volumes:
       - grafana_data:/var/lib/grafana
     ports:
-      - "3001:3000"
+      - '3001:3000'
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
 
   node-exporter:
     image: prom/node-exporter:latest
     ports:
-      - "9100:9100"
+      - '9100:9100'
 
 volumes:
   prometheus_data:
@@ -262,7 +262,9 @@ Send alerts to Discord:
 ```typescript
 // src/libs/discord.ts
 export async function sendDiscordAlert(message: string) {
-  if (!process.env.DISCORD_WEBHOOK_URL) return;
+  if (!process.env.DISCORD_WEBHOOK_URL) {
+    return;
+  }
 
   await fetch(process.env.DISCORD_WEBHOOK_URL, {
     method: 'POST',
@@ -347,10 +349,10 @@ Configure log driver in docker-compose.yml:
 services:
   app:
     logging:
-      driver: "json-file"
+      driver: json-file
       options:
-        max-size: "10m"
-        max-file: "3"
+        max-size: 10m
+        max-file: '3'
 ```
 
 View logs:
@@ -395,8 +397,8 @@ Track with PostHog:
 ```typescript
 // Measure page load time
 posthog.capture('$pageview', {
-  loadTime: window.performance.timing.loadEventEnd -
-            window.performance.timing.navigationStart,
+  loadTime: window.performance.timing.loadEventEnd
+    - window.performance.timing.navigationStart,
 });
 
 // Measure API response time
@@ -444,23 +446,23 @@ LIMIT 10;
 Use k6 for load testing:
 
 ```javascript
+import { check, sleep } from 'k6';
 // loadtest.js
 import http from 'k6/http';
-import { check, sleep } from 'k6';
 
 export const options = {
   stages: [
     { duration: '2m', target: 100 }, // Ramp-up
     { duration: '5m', target: 100 }, // Stay at 100 users
-    { duration: '2m', target: 0 },   // Ramp-down
+    { duration: '2m', target: 0 }, // Ramp-down
   ],
 };
 
 export default function () {
   const res = http.get('https://yourdomain.com');
   check(res, {
-    'status is 200': (r) => r.status === 200,
-    'response time < 500ms': (r) => r.timings.duration < 500,
+    'status is 200': r => r.status === 200,
+    'response time < 500ms': r => r.timings.duration < 500,
   });
   sleep(1);
 }

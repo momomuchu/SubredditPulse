@@ -313,7 +313,7 @@ Usage:
 ```tsx
 import { SentimentTrendChart } from '@/components/pulse/SentimentTrendChart';
 
-<SentimentTrendChart scans={scans} title="Sentiment Trend" />
+<SentimentTrendChart scans={scans} title="Sentiment Trend" />;
 ```
 
 ### Alert Management
@@ -386,4 +386,3 @@ Reddit API has rate limits. SubredditPulse implements:
 3. **API Authentication**: All endpoints require user authentication
 4. **Rate Limiting**: Consider adding Arcjet rate limiting for API routes
 5. **Input Validation**: All user inputs are validated before database operations
-

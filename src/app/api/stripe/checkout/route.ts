@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { z } from 'zod';
+import { auth } from '@/auth';
 import { Env } from '@/libs/Env';
 import { logger } from '@/libs/Logger';
 import { createCheckoutSession } from '@/libs/StripeCheckout';
@@ -38,13 +39,22 @@ export async function POST(request: Request) {
   }
 
   try {
+    // Add userId to metadata for SubredditPulse credit purchases
+    const userSession = await auth();
+    if (userSession?.user?.id && typeof payload === 'object' && payload !== null) {
+      const payloadObj = payload as any;
+      if (payloadObj.metadata && !payloadObj.metadata.userId) {
+        payloadObj.metadata.userId = userSession.user.id;
+      }
+    }
+
     const baseUrl = deriveBaseUrl(request);
-    const session = await createCheckoutSession(payload, { baseUrl });
+    const checkoutSession = await createCheckoutSession(payload, { baseUrl });
 
     return NextResponse.json(
       {
-        sessionId: session.id,
-        url: session.url,
+        sessionId: checkoutSession.id,
+        url: checkoutSession.url,
       },
       { status: 200, headers: { 'Cache-Control': 'no-store' } },
     );

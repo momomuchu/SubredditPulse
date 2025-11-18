@@ -1,10 +1,10 @@
 import { and, desc, eq } from 'drizzle-orm';
 
+import { alertHistory, alerts, monitoredSubreddits, scanResults, scans, sentimentBaselines, subredditKeywords, userCredits, users } from '@/models/Schema';
 import { db } from './DB';
 import { EmailNotifications } from './EmailNotifications';
 import { Reddit } from './Reddit';
 import { SentimentAnalysis } from './SentimentAnalysis';
-import { alerts, alertHistory, monitoredSubreddits, scanResults, scans, sentimentBaselines, subredditKeywords, userCredits, users } from '@/models/Schema';
 
 /**
  * Scan Service
@@ -101,9 +101,9 @@ class ScanServiceClass {
         // Determine sentiment trend
         const sentimentTrend = baseline
           ? SentimentAnalysis.determineTrend(
-            sentimentResult.averageSentiment,
-            baseline.averageSentiment,
-          )
+              sentimentResult.averageSentiment,
+              baseline.averageSentiment,
+            )
           : 'stable';
 
         // Update scan record
@@ -516,12 +516,14 @@ class ScanServiceClass {
             }
 
             // Mark notification as sent
-            await db.update(alertHistory)
-              .set({
-                notificationSent: true,
-                notificationSentAt: new Date(),
-              })
-              .where(eq(alertHistory.id, alertRecord.id));
+            if (alertRecord) {
+              await db.update(alertHistory)
+                .set({
+                  notificationSent: true,
+                  notificationSentAt: new Date(),
+                })
+                .where(eq(alertHistory.id, alertRecord.id));
+            }
           }
         }
       }

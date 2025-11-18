@@ -13,7 +13,7 @@
   pre_tasks:
     - name: Update system packages
       ansible.builtin.package:
-        name: "*"
+        name: '*'
         state: latest
       when: ansible_os_family == "RedHat"
 
@@ -32,4 +32,4 @@
   post_tasks:
     - name: Display completion message
       ansible.builtin.debug:
-        msg: "Server setup completed successfully!"
+        msg: Server setup completed successfully!

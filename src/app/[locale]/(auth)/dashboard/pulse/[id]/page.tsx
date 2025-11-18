@@ -2,8 +2,9 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { SentimentTrendChart } from '@/components/pulse/SentimentTrendChart';
 
-interface Scan {
+type Scan = {
   id: string;
   createdAt: string;
   scanType: string;
@@ -11,9 +12,9 @@ interface Scan {
   overallSentiment: number | null;
   sentimentTrend: string | null;
   postsScanned: number;
-}
+};
 
-interface Subreddit {
+type Subreddit = {
   id: string;
   subredditName: string;
   displayName: string;
@@ -22,7 +23,7 @@ interface Subreddit {
   isActive: boolean;
   lastScanAt: string | null;
   keywords: string[];
-}
+};
 
 export default function SubredditDetailPage() {
   const params = useParams();
@@ -163,7 +164,7 @@ export default function SubredditDetailPage() {
                 && latestScan.overallSentiment > 0.1
                   ? 'text-green-600'
                   : latestScan.overallSentiment !== null
-                      && latestScan.overallSentiment < -0.1
+                    && latestScan.overallSentiment < -0.1
                     ? 'text-red-600'
                     : 'text-gray-600'
               }`}
@@ -211,103 +212,127 @@ export default function SubredditDetailPage() {
         </div>
       </div>
 
+      {/* Sentiment Trend Chart */}
+      {scans.length > 0 && (
+        <div className="mb-8">
+          <h2 className="mb-4 text-xl font-bold">Sentiment Trend</h2>
+          <div className="rounded-lg bg-white p-6 shadow">
+            <SentimentTrendChart
+              scans={scans.map(scan => ({
+                id: scan.id,
+                createdAt: scan.createdAt,
+                overallSentiment: scan.overallSentiment || 0,
+                sentimentTrend: scan.sentimentTrend,
+              }))}
+              title={`Sentiment trend for r/${subreddit.displayName}`}
+            />
+          </div>
+        </div>
+      )}
+
       {/* Scan History */}
       <div>
         <h2 className="mb-4 text-xl font-bold">Scan History</h2>
-        {scans.length === 0 ? (
-          <div className="rounded-lg bg-white p-8 text-center shadow">
-            <p className="mb-4 text-gray-600">No scans yet</p>
-            <button
-              onClick={handleScanNow}
-              disabled={scanning}
-              className="rounded-lg bg-purple-600 px-6 py-3 text-white hover:bg-purple-700"
-            >
-              Run First Scan
-            </button>
-          </div>
-        ) : (
-          <div className="overflow-hidden rounded-lg bg-white shadow">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                    Date & Time
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                    Type
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                    Status
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                    Posts
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                    Sentiment
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                    Trend
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200 bg-white">
-                {scans.map(scan => (
-                  <tr key={scan.id}>
-                    <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-900">
-                      <div>
-                        {new Date(scan.createdAt).toLocaleDateString()}
-                      </div>
-                      <div className="text-xs text-gray-500">
-                        {new Date(scan.createdAt).toLocaleTimeString()}
-                      </div>
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                      <span className="capitalize">{scan.scanType}</span>
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4">
-                      <span
-                        className={`rounded-full px-2 py-1 text-xs ${
-                          scan.status === 'completed'
-                            ? 'bg-green-100 text-green-700'
-                            : scan.status === 'failed'
-                              ? 'bg-red-100 text-red-700'
-                              : 'bg-yellow-100 text-yellow-700'
-                        }`}
+        {scans.length === 0
+          ? (
+              <div className="rounded-lg bg-white p-8 text-center shadow">
+                <p className="mb-4 text-gray-600">No scans yet</p>
+                <button
+                  onClick={handleScanNow}
+                  disabled={scanning}
+                  className="rounded-lg bg-purple-600 px-6 py-3 text-white hover:bg-purple-700"
+                >
+                  Run First Scan
+                </button>
+              </div>
+            )
+          : (
+              <div className="overflow-hidden rounded-lg bg-white shadow">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
+                        Date & Time
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
+                        Type
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
+                        Status
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
+                        Posts
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
+                        Sentiment
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
+                        Trend
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200 bg-white">
+                    {scans.map(scan => (
+                      <tr
+                        key={scan.id}
+                        onClick={() => router.push(`/dashboard/pulse/scan/${scan.id}`)}
+                        className="cursor-pointer transition hover:bg-gray-50"
                       >
-                        {scan.status}
-                      </span>
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                      {scan.postsScanned}
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4 text-sm">
-                      {scan.overallSentiment !== null && (
-                        <span
-                          className={`font-medium ${
-                            scan.overallSentiment > 0.1
-                              ? 'text-green-600'
-                              : scan.overallSentiment < -0.1
-                                ? 'text-red-600'
-                                : 'text-gray-600'
-                          }`}
-                        >
-                          {scan.overallSentiment.toFixed(2)}
-                        </span>
-                      )}
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                      {scan.sentimentTrend && (
-                        <span className="capitalize">
-                          {scan.sentimentTrend}
-                        </span>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+                        <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
+                          <div>
+                            {new Date(scan.createdAt).toLocaleDateString()}
+                          </div>
+                          <div className="text-xs text-gray-500">
+                            {new Date(scan.createdAt).toLocaleTimeString()}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-500">
+                          <span className="capitalize">{scan.scanType}</span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span
+                            className={`rounded-full px-2 py-1 text-xs ${
+                              scan.status === 'completed'
+                                ? 'bg-green-100 text-green-700'
+                                : scan.status === 'failed'
+                                  ? 'bg-red-100 text-red-700'
+                                  : 'bg-yellow-100 text-yellow-700'
+                            }`}
+                          >
+                            {scan.status}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-500">
+                          {scan.postsScanned}
+                        </td>
+                        <td className="px-6 py-4 text-sm whitespace-nowrap">
+                          {scan.overallSentiment !== null && (
+                            <span
+                              className={`font-medium ${
+                                scan.overallSentiment > 0.1
+                                  ? 'text-green-600'
+                                  : scan.overallSentiment < -0.1
+                                    ? 'text-red-600'
+                                    : 'text-gray-600'
+                              }`}
+                            >
+                              {scan.overallSentiment.toFixed(2)}
+                            </span>
+                          )}
+                        </td>
+                        <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-500">
+                          {scan.sentimentTrend && (
+                            <span className="capitalize">
+                              {scan.sentimentTrend}
+                            </span>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
       </div>
     </div>
   );

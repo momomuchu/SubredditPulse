@@ -1,12 +1,12 @@
+import type { DiscordEmbed, DiscordEmbedField } from './Discord';
 import { and, count, gte, sql } from 'drizzle-orm';
+import { payments, sessions, users } from '@/models/Schema';
 import { db } from './DB';
 import { DiscordColors, sendDiscordEmbed } from './Discord';
-import type { DiscordEmbed, DiscordEmbedField } from './Discord';
 import { Env } from './Env';
 import { logger } from './Logger';
-import { payments, sessions, users } from '@/models/Schema';
 
-export interface DailyReportData {
+export type DailyReportData = {
   date: string;
   health: {
     status: string;
@@ -31,7 +31,7 @@ export interface DailyReportData {
   sessions: {
     active: number;
   };
-}
+};
 
 /**
  * Gathers all application metrics for the daily report
@@ -242,12 +242,15 @@ function formatUptime(seconds: number): string {
   const minutes = Math.floor((seconds % 3600) / 60);
 
   const parts = [];
-  if (days > 0)
+  if (days > 0) {
     parts.push(`${days}d`);
-  if (hours > 0)
+  }
+  if (hours > 0) {
     parts.push(`${hours}h`);
-  if (minutes > 0)
+  }
+  if (minutes > 0) {
     parts.push(`${minutes}m`);
+  }
 
   return parts.join(' ') || '< 1m';
 }

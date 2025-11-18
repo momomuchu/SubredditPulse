@@ -1,11 +1,11 @@
 import { Env } from './Env';
 
-interface EmailOptions {
+type EmailOptions = {
   to: string;
   subject: string;
   html: string;
   text?: string;
-}
+};
 
 /**
  * Email Service

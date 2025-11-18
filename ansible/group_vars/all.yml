@@ -11,17 +11,17 @@ app_dir: /opt/nextjs-boilerplate
 app_port: 3000
 
 # Docker Configuration
-docker_compose_version: "2.23.0"
+docker_compose_version: 2.23.0
 
 # Node.js Configuration
-node_version: "20"
+node_version: '20'
 
 # Security
 firewall_allowed_ports:
-  - "22"    # SSH
-  - "80"    # HTTP
-  - "443"   # HTTPS
-  - "3000"  # Application (if direct access needed)
+  - '22' # SSH
+  - '80' # HTTP
+  - '443' # HTTPS
+  - '3000' # Application (if direct access needed)
 
 # Timezone
-timezone: "UTC"
+timezone: UTC

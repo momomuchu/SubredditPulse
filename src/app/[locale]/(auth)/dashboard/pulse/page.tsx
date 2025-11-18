@@ -1,9 +1,8 @@
-import Link from 'next/link';
+import { desc, eq } from 'drizzle-orm';
 
+import Link from 'next/link';
 import { auth } from '@/auth';
 import { db } from '@/libs/DB';
-import { eq } from 'drizzle-orm';
-import { desc } from 'drizzle-orm';
 import { monitoredSubreddits, scans, userCredits } from '@/models/Schema';
 
 export default async function PulseDashboard() {
@@ -80,69 +79,71 @@ export default async function PulseDashboard() {
       {/* Monitored Subreddits */}
       <div className="mb-8">
         <h2 className="mb-4 text-2xl font-bold">Monitored Subreddits</h2>
-        {subreddits.length === 0 ? (
-          <div className="rounded-lg bg-white p-8 text-center shadow">
-            <p className="mb-4 text-gray-600">
-              You haven't added any subreddits yet.
-            </p>
-            <Link
-              href="/dashboard/pulse/add"
-              className="inline-block rounded-lg bg-purple-600 px-6 py-3 text-white hover:bg-purple-700"
-            >
-              Add Your First Subreddit
-            </Link>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {subreddits.map((subreddit: any) => (
-              <Link
-                key={subreddit.id}
-                href={`/dashboard/pulse/${subreddit.id}`}
-                className="block rounded-lg bg-white p-6 shadow transition hover:shadow-lg"
-              >
-                <div className="mb-2 flex items-center justify-between">
-                  <h3 className="text-xl font-bold">
-                    r/
-                    {subreddit.displayName}
-                  </h3>
-                  <span
-                    className={`rounded-full px-2 py-1 text-xs ${
-                      subreddit.isActive
-                        ? 'bg-green-100 text-green-700'
-                        : 'bg-gray-100 text-gray-700'
-                    }`}
+        {subreddits.length === 0
+          ? (
+              <div className="rounded-lg bg-white p-8 text-center shadow">
+                <p className="mb-4 text-gray-600">
+                  You haven't added any subreddits yet.
+                </p>
+                <Link
+                  href="/dashboard/pulse/add"
+                  className="inline-block rounded-lg bg-purple-600 px-6 py-3 text-white hover:bg-purple-700"
+                >
+                  Add Your First Subreddit
+                </Link>
+              </div>
+            )
+          : (
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {subreddits.map((subreddit: any) => (
+                  <Link
+                    key={subreddit.id}
+                    href={`/dashboard/pulse/${subreddit.id}`}
+                    className="block rounded-lg bg-white p-6 shadow transition hover:shadow-lg"
                   >
-                    {subreddit.isActive ? 'Active' : 'Inactive'}
-                  </span>
-                </div>
-                <div className="mb-4 text-sm text-gray-600">
-                  <div>
-                    Frequency:
-                    {' '}
-                    {subreddit.scanFrequency.replace('_', ' ')}
-                  </div>
-                  <div>
-                    Posts per scan:
-                    {' '}
-                    {subreddit.postLimit}
-                  </div>
-                </div>
-                {subreddit.lastScanAt && (
-                  <div className="text-sm text-gray-500">
-                    Last scan:
-                    {' '}
-                    {new Date(subreddit.lastScanAt).toLocaleDateString()}
-                  </div>
-                )}
-                {!subreddit.lastScanAt && (
-                  <div className="text-sm text-orange-600">
-                    No scans yet - Click to run first scan
-                  </div>
-                )}
-              </Link>
-            ))}
-          </div>
-        )}
+                    <div className="mb-2 flex items-center justify-between">
+                      <h3 className="text-xl font-bold">
+                        r/
+                        {subreddit.displayName}
+                      </h3>
+                      <span
+                        className={`rounded-full px-2 py-1 text-xs ${
+                          subreddit.isActive
+                            ? 'bg-green-100 text-green-700'
+                            : 'bg-gray-100 text-gray-700'
+                        }`}
+                      >
+                        {subreddit.isActive ? 'Active' : 'Inactive'}
+                      </span>
+                    </div>
+                    <div className="mb-4 text-sm text-gray-600">
+                      <div>
+                        Frequency:
+                        {' '}
+                        {subreddit.scanFrequency.replace('_', ' ')}
+                      </div>
+                      <div>
+                        Posts per scan:
+                        {' '}
+                        {subreddit.postLimit}
+                      </div>
+                    </div>
+                    {subreddit.lastScanAt && (
+                      <div className="text-sm text-gray-500">
+                        Last scan:
+                        {' '}
+                        {new Date(subreddit.lastScanAt).toLocaleDateString()}
+                      </div>
+                    )}
+                    {!subreddit.lastScanAt && (
+                      <div className="text-sm text-orange-600">
+                        No scans yet - Click to run first scan
+                      </div>
+                    )}
+                  </Link>
+                ))}
+              </div>
+            )}
       </div>
 
       {/* Recent Scans */}
@@ -153,19 +154,19 @@ export default async function PulseDashboard() {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
                     Date
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
                     Type
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
                     Status
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
                     Sentiment
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
                     Posts
                   </th>
                 </tr>
@@ -173,13 +174,13 @@ export default async function PulseDashboard() {
               <tbody className="divide-y divide-gray-200 bg-white">
                 {recentScans.map((scan: any) => (
                   <tr key={scan.id}>
-                    <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-900">
+                    <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
                       {new Date(scan.createdAt).toLocaleDateString()}
                     </td>
-                    <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                    <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-500">
                       {scan.scanType}
                     </td>
-                    <td className="whitespace-nowrap px-6 py-4">
+                    <td className="px-6 py-4 whitespace-nowrap">
                       <span
                         className={`rounded-full px-2 py-1 text-xs ${
                           scan.status === 'completed'
@@ -192,7 +193,7 @@ export default async function PulseDashboard() {
                         {scan.status}
                       </span>
                     </td>
-                    <td className="whitespace-nowrap px-6 py-4 text-sm">
+                    <td className="px-6 py-4 text-sm whitespace-nowrap">
                       {scan.overallSentiment !== null && (
                         <span
                           className={`font-medium ${
@@ -207,7 +208,7 @@ export default async function PulseDashboard() {
                         </span>
                       )}
                     </td>
-                    <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                    <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-500">
                       {scan.postsScanned || 0}
                     </td>
                   </tr>

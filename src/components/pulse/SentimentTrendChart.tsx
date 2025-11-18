@@ -2,17 +2,17 @@
 
 import { useMemo } from 'react';
 
-interface ScanData {
+type ScanData = {
   id: string;
   createdAt: string;
   overallSentiment: number | null;
   sentimentTrend: string | null;
-}
+};
 
-interface SentimentTrendChartProps {
+type SentimentTrendChartProps = {
   scans: ScanData[];
   title?: string;
-}
+};
 
 export function SentimentTrendChart({ scans, title = 'Sentiment Trend' }: SentimentTrendChartProps) {
   // Process scan data for visualization
@@ -45,7 +45,9 @@ export function SentimentTrendChart({ scans, title = 'Sentiment Trend' }: Sentim
   };
 
   const xScale = (index: number) => {
-    if (chartData.length <= 1) return padding;
+    if (chartData.length <= 1) {
+      return padding;
+    }
     return padding + (index / (chartData.length - 1)) * (chartWidth - 2 * padding);
   };
 

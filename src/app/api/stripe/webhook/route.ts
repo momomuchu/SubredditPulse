@@ -5,7 +5,7 @@ import { db } from '@/libs/DB';
 import { Env } from '@/libs/Env';
 import { logger } from '@/libs/Logger';
 import { stripe } from '@/libs/Stripe';
-import { payments, users } from '@/models/Schema';
+import { payments, userCredits, users } from '@/models/Schema';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -111,6 +111,44 @@ export async function POST(request: Request) {
                 })
                 .where(eq(users.id, paymentRecord.userId));
             }
+          }
+        }
+
+        // Handle SubredditPulse credit purchases
+        if (session.metadata?.userId && session.metadata?.credits) {
+          const userId = session.metadata.userId;
+          const creditsToAdd = Number.parseInt(session.metadata.credits, 10);
+
+          if (!Number.isNaN(creditsToAdd) && creditsToAdd > 0) {
+            // Find existing credit record
+            const [existingCredits] = await db
+              .select()
+              .from(userCredits)
+              .where(eq(userCredits.userId, userId))
+              .limit(1);
+
+            if (existingCredits) {
+              // Update existing credits
+              await db
+                .update(userCredits)
+                .set({
+                  credits: existingCredits.credits + creditsToAdd,
+                  updatedAt: new Date(),
+                })
+                .where(eq(userCredits.userId, userId));
+            } else {
+              // Create new credit record
+              await db.insert(userCredits).values({
+                userId,
+                credits: creditsToAdd,
+              });
+            }
+
+            logger.info('Added credits to user account', {
+              userId,
+              creditsAdded: creditsToAdd,
+              sessionId: session.id,
+            });
           }
         }
 

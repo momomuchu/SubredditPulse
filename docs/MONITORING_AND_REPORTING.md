@@ -128,7 +128,7 @@ await sendDiscordTextMessage('Hello from the app!');
 #### Send an Embed
 
 ```typescript
-import { sendDiscordEmbed, DiscordColors } from '@/libs/Discord';
+import { DiscordColors, sendDiscordEmbed } from '@/libs/Discord';
 
 await sendDiscordEmbed({
   title: 'New User Registered',
@@ -153,11 +153,11 @@ await sendDiscordEmbed({
 #### Available Colors
 
 ```typescript
-DiscordColors.SUCCESS  // Green (0x00FF00)
-DiscordColors.WARNING  // Yellow (0xFFFF00)
-DiscordColors.ERROR    // Red (0xFF0000)
-DiscordColors.INFO     // Blue (0x0099FF)
-DiscordColors.DEFAULT  // Discord blurple (0x7289DA)
+DiscordColors.SUCCESS; // Green (0x00FF00)
+DiscordColors.WARNING; // Yellow (0xFFFF00)
+DiscordColors.ERROR; // Red (0xFF0000)
+DiscordColors.INFO; // Blue (0x0099FF)
+DiscordColors.DEFAULT; // Discord blurple (0x7289DA)
 ```
 
 ## Daily Reports

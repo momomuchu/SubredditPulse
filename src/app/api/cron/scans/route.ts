@@ -1,5 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 import { and, eq, lte } from 'drizzle-orm';
+import { NextResponse } from 'next/server';
 
 import { db } from '@/libs/DB';
 import { Env } from '@/libs/Env';

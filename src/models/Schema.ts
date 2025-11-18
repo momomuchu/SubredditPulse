@@ -1,6 +1,6 @@
 import type { AdapterAccount } from 'next-auth/adapters';
 import { randomUUID } from 'node:crypto';
-import { boolean,  doublePrecision, integer, jsonb, pgTable, primaryKey, serial, text, timestamp } from 'drizzle-orm/pg-core';
+import { boolean, doublePrecision, integer, jsonb, pgTable, primaryKey, serial, text, timestamp } from 'drizzle-orm/pg-core';
 
 // This file defines the structure of your database tables using the Drizzle ORM.
 

@@ -1,13 +1,13 @@
 import { Env } from './Env';
 import { logger } from './Logger';
 
-export interface DiscordEmbedField {
+export type DiscordEmbedField = {
   name: string;
   value: string;
   inline?: boolean;
-}
+};
 
-export interface DiscordEmbed {
+export type DiscordEmbed = {
   title?: string;
   description?: string;
   color?: number;
@@ -21,14 +21,14 @@ export interface DiscordEmbed {
     name: string;
     icon_url?: string;
   };
-}
+};
 
-export interface DiscordWebhookPayload {
+export type DiscordWebhookPayload = {
   content?: string;
   username?: string;
   avatar_url?: string;
   embeds?: DiscordEmbed[];
-}
+};
 
 /**
  * Discord color codes
@@ -183,12 +183,15 @@ function formatUptime(seconds: number): string {
   const minutes = Math.floor((seconds % 3600) / 60);
 
   const parts = [];
-  if (days > 0)
+  if (days > 0) {
     parts.push(`${days}d`);
-  if (hours > 0)
+  }
+  if (hours > 0) {
     parts.push(`${hours}h`);
-  if (minutes > 0)
+  }
+  if (minutes > 0) {
     parts.push(`${minutes}m`);
+  }
 
   return parts.join(' ') || '< 1m';
 }

@@ -1,5 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 import { and, desc, eq } from 'drizzle-orm';
+import { NextResponse } from 'next/server';
 
 import { auth } from '@/auth';
 import { db } from '@/libs/DB';
@@ -19,6 +20,7 @@ export async function GET(request: NextRequest) {
 
     const { searchParams } = new URL(request.url);
     const subredditId = searchParams.get('subredditId');
+    const getConfig = searchParams.get('config') === 'true';
 
     if (!subredditId) {
       // Get all alerts for user's subreddits
@@ -27,6 +29,7 @@ export async function GET(request: NextRequest) {
         .where(eq(monitoredSubreddits.userId, session.user.id));
 
       const subredditIds = userSubreddits.map(s => s.id);
+      const subredditMap = new Map(userSubreddits.map(s => [s.id, s]));
 
       const allAlertHistory = await db.select()
         .from(alertHistory)
@@ -42,10 +45,13 @@ export async function GET(request: NextRequest) {
             .limit(1);
 
           if (alertConfig && subredditIds.includes(alertConfig.subredditId)) {
+            const subreddit = subredditMap.get(alertConfig.subredditId);
             return {
               ...alert,
               alertType: alertConfig.alertType,
               subredditId: alertConfig.subredditId,
+              subredditName: subreddit?.subredditName,
+              displayName: subreddit?.displayName,
             };
           }
           return null;
@@ -54,6 +60,37 @@ export async function GET(request: NextRequest) {
 
       return NextResponse.json({
         alerts: userAlerts.filter(a => a !== null),
+      });
+    }
+
+    // Return alert configurations if requested
+    if (getConfig) {
+      const [subreddit] = await db.select()
+        .from(monitoredSubreddits)
+        .where(
+          and(
+            eq(monitoredSubreddits.id, subredditId),
+            eq(monitoredSubreddits.userId, session.user.id),
+          ),
+        )
+        .limit(1);
+
+      if (!subreddit) {
+        return NextResponse.json(
+          { error: 'Subreddit not found or unauthorized' },
+          { status: 404 },
+        );
+      }
+
+      const configs = await db.select()
+        .from(alerts)
+        .where(eq(alerts.subredditId, subredditId));
+
+      return NextResponse.json({
+        configs: configs.map(c => ({
+          ...c,
+          enabled: c.isActive,
+        })),
       });
     }
 
@@ -130,11 +167,12 @@ export async function PUT(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { alertId, isActive, threshold } = body;
+    const { alertId, configId, isActive, enabled, threshold } = body;
 
-    if (!alertId) {
+    const id = alertId || configId;
+    if (!id) {
       return NextResponse.json(
-        { error: 'alertId is required' },
+        { error: 'alertId or configId is required' },
         { status: 400 },
       );
     }
@@ -142,7 +180,7 @@ export async function PUT(request: NextRequest) {
     // Get alert and verify ownership
     const [alert] = await db.select()
       .from(alerts)
-      .where(eq(alerts.id, alertId))
+      .where(eq(alerts.id, id))
       .limit(1);
 
     if (!alert) {
@@ -167,8 +205,9 @@ export async function PUT(request: NextRequest) {
 
     // Update alert
     const updateData: any = {};
-    if (typeof isActive !== 'undefined') {
-      updateData.isActive = isActive;
+    const activeValue = enabled !== undefined ? enabled : isActive;
+    if (typeof activeValue !== 'undefined') {
+      updateData.isActive = activeValue;
     }
     if (typeof threshold !== 'undefined') {
       updateData.threshold = threshold;
@@ -176,7 +215,7 @@ export async function PUT(request: NextRequest) {
 
     const [updatedAlert] = await db.update(alerts)
       .set(updateData)
-      .where(eq(alerts.id, alertId))
+      .where(eq(alerts.id, id))
       .returning();
 
     return NextResponse.json({

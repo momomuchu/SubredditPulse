@@ -41,8 +41,8 @@
 
 - name: Create cron job for health checks
   ansible.builtin.cron:
-    name: "Application health check"
-    minute: "*/5"
-    job: "/usr/local/bin/app-health-check.sh"
+    name: Application health check
+    minute: '*/5'
+    job: /usr/local/bin/app-health-check.sh
     user: root
   when: enable_monitoring | default(false)

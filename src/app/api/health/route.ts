@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
 import { sql } from 'drizzle-orm';
+import { NextResponse } from 'next/server';
 import { db } from '@/libs/DB';
 import { Env } from '@/libs/Env';
 import { logger } from '@/libs/Logger';
@@ -10,7 +10,7 @@ export const dynamic = 'force-dynamic';
 type ServiceStatus = 'up' | 'down';
 type HealthStatus = 'healthy' | 'degraded' | 'unhealthy';
 
-interface HealthCheckResponse {
+type HealthCheckResponse = {
   status: HealthStatus;
   timestamp: string;
   version: string;
@@ -30,7 +30,7 @@ interface HealthCheckResponse {
       hasWebhookSecret: boolean;
     };
   };
-}
+};
 
 /**
  * @swagger

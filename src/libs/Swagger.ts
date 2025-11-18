@@ -131,7 +131,7 @@ const swaggerDefinition = {
         description: 'Returns the health status of the application and its dependencies',
         tags: ['System'],
         responses: {
-          '200': {
+          200: {
             description: 'Health check successful',
             content: {
               'application/json': {
@@ -141,7 +141,7 @@ const swaggerDefinition = {
               },
             },
           },
-          '503': {
+          503: {
             description: 'Service unavailable',
             content: {
               'application/json': {
@@ -188,7 +188,7 @@ const swaggerDefinition = {
           },
         },
         responses: {
-          '200': {
+          200: {
             description: 'Checkout session created successfully',
             content: {
               'application/json': {
@@ -198,7 +198,7 @@ const swaggerDefinition = {
               },
             },
           },
-          '400': {
+          400: {
             description: 'Invalid request',
             content: {
               'application/json': {
@@ -208,7 +208,7 @@ const swaggerDefinition = {
               },
             },
           },
-          '502': {
+          502: {
             description: 'Stripe API error',
             content: {
               'application/json': {
@@ -238,7 +238,7 @@ const swaggerDefinition = {
           },
         },
         responses: {
-          '200': {
+          200: {
             description: 'Webhook processed successfully',
             content: {
               'application/json': {
@@ -253,7 +253,7 @@ const swaggerDefinition = {
               },
             },
           },
-          '400': {
+          400: {
             description: 'Invalid webhook signature',
             content: {
               'application/json': {
